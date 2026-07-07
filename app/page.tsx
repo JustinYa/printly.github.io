@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import type { ChangeEvent, DragEvent, FormEvent, MouseEvent } from "react";
-import { useRef, useState } from "react";
+import type { MouseEvent } from "react";
+import { useState } from "react";
 
 const contactEmail = "contact.printlylab@gmail.com";
+const quoteFormUrl =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdqbuDsPwCyFewc5asZn3jofF2rcWo1aD5FYC54Amrs8gEOTw/viewform?usp=publish-editor";
 const siteBasePath =
   process.env.NEXT_PUBLIC_BASE_PATH ??
   (process.env.NODE_ENV === "production" ? "/printly.github.io" : "");
@@ -20,18 +22,6 @@ type IconName =
   | "upload"
   | "mail"
   | "check";
-
-const materials = ["PLA", "PETG", "ABS", "ASA", "TPU"];
-const acceptedFileExtensions = [".stl", ".3mf", ".obj", ".step", ".stp", ".zip"];
-const colors = [
-  { name: "White", value: "#f8fafc" },
-  { name: "Black", value: "#18181b" },
-  { name: "Gray", value: "#94a3b8" },
-  { name: "Blue", value: "#2F6BFF" },
-  { name: "Red", value: "#ef4444" },
-  { name: "Yellow", value: "#facc15" },
-  { name: "Custom", value: "linear-gradient(135deg, #2F6BFF, #7A7A7A, #18181B)" }
-];
 
 const featureHighlights: Array<{
   title: string;
@@ -124,14 +114,6 @@ async function copyTextToClipboard(text: string) {
   } catch {
     return false;
   }
-}
-
-function isAcceptedModelFile(fileName: string) {
-  const normalizedFileName = fileName.toLowerCase();
-
-  return acceptedFileExtensions.some((extension) =>
-    normalizedFileName.endsWith(extension)
-  );
 }
 
 function Icon({ name, className = "size-7" }: { name: IconName; className?: string }) {
@@ -231,102 +213,8 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
   }
 }
 
-function buildMailto(form: HTMLFormElement, fileNames: string[]) {
-  const data = new FormData(form);
-  const subject = "Printly FDM Quote Request";
-  const color =
-    data.get("color") === "Custom"
-      ? `Custom - ${data.get("customColor") ?? ""}`
-      : data.get("color") ?? "";
-  const delivery = data.get("delivery") ?? "";
-  const shippingAddressLines =
-    delivery === "Shipping"
-      ? [
-          "",
-          "Shipping Address:",
-          `Street: ${data.get("shippingStreet") ?? ""}`,
-          `Apt / Suite: ${data.get("shippingUnit") ?? ""}`,
-          `City: ${data.get("shippingCity") ?? ""}`,
-          `State: ${data.get("shippingState") ?? ""}`,
-          `ZIP Code: ${data.get("shippingZip") ?? ""}`
-        ]
-      : [];
-  const body = [
-    "Hi Printly,",
-    "",
-    "I would like a quote for an FDM 3D printing project.",
-    "",
-    `Name: ${data.get("name") ?? ""}`,
-    `Email / Phone: ${data.get("contact") ?? ""}`,
-    "Technology: FDM",
-    `Material: ${data.get("material") ?? ""}`,
-    `Color: ${color}`,
-    `Quantity: ${data.get("quantity") ?? ""}`,
-    `Size / Requirement: ${data.get("size") ?? ""}`,
-    `Delivery Method: ${delivery}`,
-    ...shippingAddressLines,
-    `Selected Files: ${
-      fileNames.length > 0 ? fileNames.join(", ") : "I will attach them manually"
-    }`,
-    "",
-    "Notes:",
-    `${data.get("notes") ?? ""}`,
-    "",
-    "Please attach all model files before sending this email."
-  ].join("\n");
-
-  return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
 export default function Home() {
-  const [fileNames, setFileNames] = useState<string[]>([]);
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedDelivery, setSelectedDelivery] = useState("");
   const [emailNotice, setEmailNotice] = useState("");
-  const [quoteNotice, setQuoteNotice] = useState("");
-  const [quoteMailto, setQuoteMailto] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  function addFileNames(nextFileNames: string[]) {
-    const acceptedFileNames = nextFileNames.filter(isAcceptedModelFile);
-
-    if (acceptedFileNames.length === 0) {
-      return;
-    }
-
-    setFileNames((currentFileNames) => [
-      ...new Set([...currentFileNames, ...acceptedFileNames])
-    ]);
-  }
-
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const nextFileNames = Array.from(event.target.files ?? []).map((file) => file.name);
-
-    addFileNames(nextFileNames);
-    event.target.value = "";
-  }
-
-  function handleFileDrop(event: DragEvent<HTMLDivElement>) {
-    event.preventDefault();
-    addFileNames(Array.from(event.dataTransfer.files).map((file) => file.name));
-  }
-
-  function handleFileDragOver(event: DragEvent<HTMLDivElement>) {
-    event.preventDefault();
-  }
-
-  function openFilePicker() {
-    fileInputRef.current?.click();
-  }
-
-  function removeSelectedFile(fileName: string) {
-    setFileNames((currentFileNames) =>
-      currentFileNames.filter((currentFileName) => currentFileName !== fileName)
-    );
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  }
 
   function handleEmailClick(event: MouseEvent<HTMLAnchorElement>) {
     event.currentTarget.blur();
@@ -339,28 +227,6 @@ export default function Home() {
           : "If nothing opened, copy this address into your email app."
       );
     });
-  }
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-
-    if (!form.checkValidity()) {
-      setQuoteMailto("");
-      setQuoteNotice("Please complete the required fields first, then submit again.");
-      form.reportValidity();
-      return;
-    }
-
-    const mailto = buildMailto(form, fileNames);
-
-    setQuoteMailto(mailto);
-    setQuoteNotice(
-      "Opening your email draft. If nothing opens, your browser needs a default mail app. Attach your model files before sending."
-    );
-    void copyTextToClipboard(contactEmail);
-    window.location.href = mailto;
   }
 
   return (
@@ -395,7 +261,9 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
             <a
-              href="#quote"
+              href={quoteFormUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="focus-ring inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
             >
               <Icon name="upload" className="size-5" />
@@ -408,12 +276,12 @@ export default function Home() {
           <div className="relative overflow-hidden rounded-lg">
             <Image
               src={assetPath("/images/fdm-studio-hero.png")}
-              alt="FDM 3D printing studio with a desktop printer producing a blue part"
-              width={1536}
-              height={1024}
+              alt="FDM 3D printing studio with a printer producing a blue part"
+              width={1448}
+              height={1086}
               priority
               sizes="(min-width: 1024px) 52vw, 92vw"
-              className="aspect-[4/3] h-full w-full object-cover"
+              className="h-auto w-full object-cover"
             />
           </div>
         </div>
@@ -545,292 +413,45 @@ export default function Home() {
               </div>
             </aside>
 
-            <form
-              className="grid gap-5 p-6 sm:p-8 lg:grid-cols-2"
-              noValidate
-              onSubmit={handleSubmit}
-            >
-              <label className="grid gap-2">
-                <span className="form-label">Your Name</span>
-                <input
-                  required
-                  name="name"
-                  autoComplete="name"
-                  className="form-field"
-                  placeholder="Enter your name"
-                />
-              </label>
-
-              <label className="grid gap-2">
-                <span className="form-label">Email / Phone</span>
-                <input
-                  required
-                  name="contact"
-                  autoComplete="email"
-                  className="form-field"
-                  placeholder="Enter your email or phone"
-                />
-              </label>
-
-              <div className="grid gap-2">
-                <span className="form-label">Upload 3D Models</span>
-                <div
-                  className="rounded-lg border border-dashed border-[#2F6BFF]/60 bg-[#EAF2FF] px-5 py-5 transition hover:border-[#2F6BFF]"
-                  onDrop={handleFileDrop}
-                  onDragOver={handleFileDragOver}
+            <div className="grid content-center gap-6 p-6 sm:p-8">
+              <div className="rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] p-6 sm:p-8">
+                <p className="text-[13px] font-extrabold uppercase text-[#2F6BFF]">
+                  Google Forms Quote Request
+                </p>
+                <h3 className="mt-3 text-3xl font-extrabold leading-tight text-[#18181B]">
+                  Submit your model and details.
+                </h3>
+                <p className="mt-4 max-w-2xl text-base leading-7 text-[#555555]">
+                  The quote form opens in a new tab. You can enter your contact
+                  details, material, color, pickup or shipping preference, and
+                  upload model files directly through Google Forms.
+                </p>
+                <a
+                  href={quoteFormUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="focus-ring mt-7 inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
                 >
-                  <input
-                    ref={fileInputRef}
-                    name="files"
-                    type="file"
-                    multiple
-                    accept=".stl,.3mf,.obj,.step,.stp,.zip"
-                    className="sr-only"
-                    onChange={handleFileChange}
-                  />
-                  <button
-                    type="button"
-                    className="focus-ring flex w-full flex-col items-center justify-center rounded-lg py-3 text-center transition hover:bg-white/70"
-                    onClick={openFilePicker}
+                  <Icon name="upload" className="size-5" />
+                  Open Quote Form
+                </a>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                {[
+                  "Upload STL, 3MF, OBJ, STEP, or ZIP files",
+                  "Responses are saved through Google Forms",
+                  "We reply with a clear quote before printing"
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-lg border border-[#ECEFF5] bg-white p-4 text-sm font-semibold leading-6 text-[#555555]"
                   >
-                    <span className="grid size-9 place-items-center text-[#2F6BFF]">
-                      <Icon name="upload" className="size-6" />
-                    </span>
-                    <span className="mt-1 block text-sm font-extrabold text-[#18181B]">
-                      {fileNames.length > 0
-                        ? `${fileNames.length} file${fileNames.length === 1 ? "" : "s"} selected`
-                        : "Click to upload or drag and drop"}
-                    </span>
-                    <span className="mt-1 block text-xs font-semibold text-[#7A7A7A]">
-                      STL, 3MF, OBJ, STEP, ZIP up to 100MB
-                    </span>
-                  </button>
-                  {fileNames.length > 0 ? (
-                    <div className="mt-4 grid gap-2" aria-live="polite">
-                      {fileNames.map((fileName) => (
-                        <div
-                          key={fileName}
-                          className="flex flex-col gap-2 rounded-lg border border-[#ECEFF5] bg-white px-3 py-3 text-left sm:flex-row sm:items-center sm:justify-between"
-                        >
-                          <span className="break-all text-sm font-bold text-[#18181B]">
-                            {fileName}
-                          </span>
-                          <button
-                            type="button"
-                            className="focus-ring rounded-lg px-3 py-2 text-xs font-extrabold text-[#7A7A7A] transition hover:bg-[#EAF2FF] hover:text-[#2F6BFF]"
-                            onClick={() => removeSelectedFile(fileName)}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
+                    {item}
+                  </div>
+                ))}
               </div>
-
-              <div className="grid content-start gap-5">
-                <label className="grid gap-2">
-                  <span className="form-label">Quantity</span>
-                  <input
-                    required
-                    min={1}
-                    name="quantity"
-                    type="number"
-                    defaultValue={1}
-                    className="form-field"
-                  />
-                </label>
-
-                <label className="grid gap-2">
-                  <span className="form-label">Size Requirement</span>
-                  <input
-                    name="size"
-                    className="form-field"
-                    placeholder="e.g. 10cm height"
-                  />
-                </label>
-              </div>
-
-              <label className="grid gap-2">
-                <span className="form-label">Material</span>
-                <select required name="material" className="form-field" defaultValue="">
-                  <option value="" disabled>
-                    Select material
-                  </option>
-                  {materials.map((material) => (
-                    <option key={material} value={material}>
-                      {material}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="grid gap-2">
-                <span className="form-label">Color</span>
-                <select
-                  required
-                  name="color"
-                  className="form-field"
-                  value={selectedColor}
-                  onChange={(event) => setSelectedColor(event.target.value)}
-                >
-                  <option value="" disabled>
-                    Select color
-                  </option>
-                  {colors.map((color) => (
-                    <option key={color.name} value={color.name}>
-                      {color.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              {selectedColor === "Custom" ? (
-                <label className="grid gap-2 lg:col-span-2">
-                  <span className="form-label">Custom Color</span>
-                  <input
-                    required
-                    name="customColor"
-                    className="form-field"
-                    placeholder="Describe the color, HEX, or filament brand if you know it"
-                  />
-                </label>
-              ) : null}
-
-              <div className="lg:col-span-2">
-                <p className="form-label">Available Colors</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {colors.map((color) => (
-                    <span
-                      key={color.name}
-                      className="inline-flex items-center gap-2 rounded-full border border-[#ECEFF5] bg-white px-3 py-2 text-xs font-bold text-[#555555]"
-                    >
-                      <span
-                        className="size-4 rounded-full border border-[#ECEFF5]"
-                        style={{ background: color.value }}
-                      />
-                      {color.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <label className="grid gap-2 lg:col-span-2">
-                <span className="form-label">Delivery Method</span>
-                <select
-                  required
-                  name="delivery"
-                  className="form-field"
-                  value={selectedDelivery}
-                  onChange={(event) => setSelectedDelivery(event.target.value)}
-                >
-                  <option value="" disabled>
-                    Select pickup or shipping
-                  </option>
-                  <option value="Pickup">Pickup</option>
-                  <option value="Shipping">Shipping</option>
-                </select>
-              </label>
-
-              {selectedDelivery === "Shipping" ? (
-                <div className="grid gap-4 rounded-lg border border-[#ECEFF5] bg-[#EAF2FF] p-4 lg:col-span-2 lg:grid-cols-2">
-                  <p className="form-label lg:col-span-2">Shipping Address</p>
-                  <label className="grid gap-2 lg:col-span-2">
-                    <span className="text-xs font-extrabold uppercase text-[#7A7A7A]">
-                      Street Address
-                    </span>
-                    <input
-                      required
-                      name="shippingStreet"
-                      autoComplete="street-address"
-                      className="form-field"
-                      placeholder="123 Main St"
-                    />
-                  </label>
-                  <label className="grid gap-2">
-                    <span className="text-xs font-extrabold uppercase text-[#7A7A7A]">
-                      Apt / Suite
-                    </span>
-                    <input
-                      name="shippingUnit"
-                      autoComplete="address-line2"
-                      className="form-field"
-                      placeholder="Apt, suite, unit"
-                    />
-                  </label>
-                  <label className="grid gap-2">
-                    <span className="text-xs font-extrabold uppercase text-[#7A7A7A]">
-                      City
-                    </span>
-                    <input
-                      required
-                      name="shippingCity"
-                      autoComplete="address-level2"
-                      className="form-field"
-                      placeholder="City"
-                    />
-                  </label>
-                  <label className="grid gap-2">
-                    <span className="text-xs font-extrabold uppercase text-[#7A7A7A]">
-                      State
-                    </span>
-                    <input
-                      required
-                      name="shippingState"
-                      autoComplete="address-level1"
-                      className="form-field"
-                      placeholder="CA"
-                    />
-                  </label>
-                  <label className="grid gap-2">
-                    <span className="text-xs font-extrabold uppercase text-[#7A7A7A]">
-                      ZIP Code
-                    </span>
-                    <input
-                      required
-                      name="shippingZip"
-                      autoComplete="postal-code"
-                      className="form-field"
-                      placeholder="90001"
-                    />
-                  </label>
-                </div>
-              ) : null}
-
-              <label className="grid gap-2 lg:col-span-2">
-                <span className="form-label">Additional Notes</span>
-                <textarea
-                  name="notes"
-                  rows={3}
-                  className="form-field resize-none py-3"
-                  placeholder="Anything else we should know?"
-                />
-              </label>
-
-              <button
-                type="submit"
-                className="focus-ring min-h-[52px] rounded-xl bg-[#2F6BFF] px-6 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6] lg:col-span-2"
-              >
-                Submit Quote Request
-              </button>
-              {quoteNotice ? (
-                <div
-                  className="rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] px-4 py-3 text-sm font-semibold leading-6 text-[#555555] lg:col-span-2"
-                  aria-live="polite"
-                >
-                  <p>{quoteNotice}</p>
-                  {quoteMailto ? (
-                    <a
-                      className="focus-ring mt-2 inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
-                      href={quoteMailto}
-                    >
-                      Open email draft again
-                    </a>
-                  ) : null}
-                </div>
-              ) : null}
-            </form>
+            </div>
           </div>
         </div>
         <footer className="flex flex-col gap-3 py-8 text-sm font-semibold text-[#7A7A7A] sm:flex-row sm:items-center sm:justify-between">
