@@ -7,6 +7,8 @@ import { useState } from "react";
 const contactEmail = "contact.printlylab@gmail.com";
 const quoteFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdqbuDsPwCyFewc5asZn3jofF2rcWo1aD5FYC54Amrs8gEOTw/viewform?usp=publish-editor";
+const supportFormUrl =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdy8woehAlDrSA1wL-Ksqe0MGnCQ2zHcIV5OfGymYANGYE_tA/viewform?usp=publish-editor";
 const siteBasePath =
   process.env.NEXT_PUBLIC_BASE_PATH ??
   (process.env.NODE_ENV === "production" ? "/printly.github.io" : "");
@@ -378,35 +380,32 @@ export default function Home() {
           <div className="grid lg:grid-cols-[0.31fr_0.69fr]">
             <aside className="bg-[#F8FAFD] p-8 sm:p-10">
               <h2 className="text-3xl font-extrabold leading-tight text-[#18181B] sm:text-4xl">
-                Get Started
+                Get
+                <br />
+                Support
               </h2>
+              <div className="mt-7 h-1 w-10 rounded-full bg-[#2F6BFF]" />
               <p className="mt-4 text-sm leading-7 text-[#555555]">
-                Fill out the form and upload your model. We will get back to you
-                with a clear FDM quote.
+                Questions about 3D printing?
+                <br />
+                We are here to help.
               </p>
-              <div className="mt-9 grid gap-3">
-                {["Quote first", "Pickup or shipping"].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-lg border border-[#ECEFF5] bg-white px-4 py-3 text-sm font-extrabold text-[#18181B]"
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 space-y-2 text-sm">
-                <p className="font-semibold text-[#7A7A7A]">
-                  Need help before submitting?
+              <div className="mt-28 border-t border-[#ECEFF5] pt-8 text-sm">
+                <p className="font-extrabold text-[#18181B]">
+                  Need urgent help?
                 </p>
                 <a
-                  className="focus-ring inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
+                  className="focus-ring mt-2 inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
                   href={`mailto:${contactEmail}`}
                   onClick={handleEmailClick}
                 >
                   {contactEmail}
                 </a>
+                <p className="mt-4 leading-6 text-[#7A7A7A]">
+                  We typically reply within 24 hours on business days.
+                </p>
                 {emailNotice ? (
-                  <p className="text-xs font-semibold leading-5 text-[#555555]" aria-live="polite">
+                  <p className="mt-3 text-xs font-semibold leading-5 text-[#555555]" aria-live="polite">
                     {emailNotice}
                   </p>
                 ) : null}
@@ -414,42 +413,69 @@ export default function Home() {
             </aside>
 
             <div className="grid content-center gap-6 p-6 sm:p-8">
-              <div className="rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] p-6 sm:p-8">
-                <p className="text-[13px] font-extrabold uppercase text-[#2F6BFF]">
-                  Google Forms Quote Request
-                </p>
-                <h3 className="mt-3 text-3xl font-extrabold leading-tight text-[#18181B]">
-                  Submit your model and details.
+              <div className="p-2 sm:p-4">
+                <h3 className="max-w-xl text-4xl font-extrabold leading-[1.08] text-[#18181B] sm:text-5xl">
+                  Tell us how we
+                  <br />
+                  can help<span className="text-[#2F6BFF]">.</span>
                 </h3>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-[#555555]">
-                  The quote form opens in a new tab. You can enter your contact
-                  details, material, color, pickup or shipping preference, and
-                  upload model files directly through Google Forms.
+                <p className="mt-6 max-w-lg text-base leading-7 text-[#555555]">
+                  Fill out the support form with as much detail as possible. You
+                  can also upload files or screenshots to help us understand your
+                  question better.
                 </p>
                 <a
-                  href={quoteFormUrl}
+                  href={supportFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="focus-ring mt-7 inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
+                  className="focus-ring mt-7 inline-flex min-h-[56px] min-w-72 items-center justify-between gap-8 rounded-lg bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
                 >
-                  <Icon name="upload" className="size-5" />
-                  Open Quote Form
+                  <span className="inline-flex items-center gap-3">
+                    <Icon name="mail" className="size-5" />
+                    Open Support Form
+                  </span>
+                  <span aria-hidden="true">-&gt;</span>
                 </a>
+                <p className="mt-5 text-xs font-semibold text-[#7A7A7A]">
+                  Secure &nbsp;•&nbsp; Powered by Google Forms
+                </p>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-3">
+              <div className="mt-4 border-t border-[#ECEFF5] pt-8">
+                <div className="grid gap-6 md:grid-cols-3">
                 {[
-                  "Upload STL, 3MF, OBJ, STEP, or ZIP files",
-                  "Responses are saved through Google Forms",
-                  "We reply with a clear quote before printing"
+                  {
+                    title: "Upload Files",
+                    description: "STL, images, or screenshots",
+                    icon: "upload" as IconName
+                  },
+                  {
+                    title: "Quick Response",
+                    description: "We typically reply within 24 hours",
+                    icon: "bolt" as IconName
+                  },
+                  {
+                    title: "Expert Advice",
+                    description: "Get clear answers from our team",
+                    icon: "mail" as IconName
+                  }
                 ].map((item) => (
                   <div
-                    key={item}
-                    className="rounded-lg border border-[#ECEFF5] bg-white p-4 text-sm font-semibold leading-6 text-[#555555]"
+                    key={item.title}
+                    className="border-[#ECEFF5] md:border-r md:pr-8 last:md:border-r-0"
                   >
-                    {item}
+                    <div className="text-[#2F6BFF]">
+                      <Icon name={item.icon} className="size-9" />
+                    </div>
+                    <h4 className="mt-5 text-base font-extrabold text-[#18181B]">
+                      {item.title}
+                    </h4>
+                    <p className="mt-2 text-sm leading-6 text-[#555555]">
+                      {item.description}
+                    </p>
                   </div>
                 ))}
+                </div>
               </div>
             </div>
           </div>
