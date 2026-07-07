@@ -319,7 +319,7 @@ export default function Home() {
 
   return (
     <main id="top" className="min-h-screen overflow-hidden bg-white text-[#18181B]">
-      <header className="container-page flex min-h-32 items-end pb-5">
+      <header className="container-page flex py-8">
         <Image
           src={assetPath("/images/printly-logo-transparent.png")}
           alt="Printly"
@@ -331,7 +331,7 @@ export default function Home() {
         />
       </header>
 
-      <section className="container-page grid gap-12 pb-16 pt-3 lg:grid-cols-[0.45fr_0.55fr] lg:items-start lg:pb-24 lg:pt-3">
+      <section className="container-page grid gap-12 pb-16 pt-0 lg:grid-cols-[0.45fr_0.55fr] lg:items-start lg:pb-24 lg:pt-0">
         <div>
           <p className="text-[13px] font-extrabold uppercase text-[#2F6BFF]">
             FDM 3D Printing
