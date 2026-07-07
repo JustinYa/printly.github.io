@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { ChangeEvent, DragEvent, FormEvent } from "react";
+import type { ChangeEvent, DragEvent, FormEvent, MouseEvent } from "react";
 import { useRef, useState } from "react";
 
 const contactEmail = "contact.printlylab@gmail.com";
@@ -111,6 +111,19 @@ const steps: Array<{
 
 function assetPath(path: string) {
   return `${siteBasePath}${path}`;
+}
+
+async function copyTextToClipboard(text: string) {
+  if (!navigator.clipboard?.writeText) {
+    return false;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function isAcceptedModelFile(fileName: string) {
@@ -269,6 +282,9 @@ export default function Home() {
   const [fileNames, setFileNames] = useState<string[]>([]);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedDelivery, setSelectedDelivery] = useState("");
+  const [emailNotice, setEmailNotice] = useState("");
+  const [quoteNotice, setQuoteNotice] = useState("");
+  const [quoteMailto, setQuoteMailto] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function addFileNames(nextFileNames: string[]) {
@@ -312,9 +328,39 @@ export default function Home() {
     }
   }
 
+  function handleEmailClick(event: MouseEvent<HTMLAnchorElement>) {
+    event.currentTarget.blur();
+    setEmailNotice("Opening your mail app. Email copied if your browser allows it.");
+
+    void copyTextToClipboard(contactEmail).then((copied) => {
+      setEmailNotice(
+        copied
+          ? "Email copied. If nothing opened, paste it into your email app."
+          : "If nothing opened, copy this address into your email app."
+      );
+    });
+  }
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    window.location.href = buildMailto(event.currentTarget, fileNames);
+
+    const form = event.currentTarget;
+
+    if (!form.checkValidity()) {
+      setQuoteMailto("");
+      setQuoteNotice("Please complete the required fields first, then submit again.");
+      form.reportValidity();
+      return;
+    }
+
+    const mailto = buildMailto(form, fileNames);
+
+    setQuoteMailto(mailto);
+    setQuoteNotice(
+      "Opening your email draft. If nothing opens, your browser needs a default mail app. Attach your model files before sending."
+    );
+    void copyTextToClipboard(contactEmail);
+    window.location.href = mailto;
   }
 
   return (
@@ -487,13 +533,23 @@ export default function Home() {
                 <a
                   className="focus-ring inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
                   href={`mailto:${contactEmail}`}
+                  onClick={handleEmailClick}
                 >
                   {contactEmail}
                 </a>
+                {emailNotice ? (
+                  <p className="text-xs font-semibold leading-5 text-[#555555]" aria-live="polite">
+                    {emailNotice}
+                  </p>
+                ) : null}
               </div>
             </aside>
 
-            <form className="grid gap-5 p-6 sm:p-8 lg:grid-cols-2" onSubmit={handleSubmit}>
+            <form
+              className="grid gap-5 p-6 sm:p-8 lg:grid-cols-2"
+              noValidate
+              onSubmit={handleSubmit}
+            >
               <label className="grid gap-2">
                 <span className="form-label">Your Name</span>
                 <input
@@ -758,12 +814,32 @@ export default function Home() {
               >
                 Submit Quote Request
               </button>
+              {quoteNotice ? (
+                <div
+                  className="rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] px-4 py-3 text-sm font-semibold leading-6 text-[#555555] lg:col-span-2"
+                  aria-live="polite"
+                >
+                  <p>{quoteNotice}</p>
+                  {quoteMailto ? (
+                    <a
+                      className="focus-ring mt-2 inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
+                      href={quoteMailto}
+                    >
+                      Open email draft again
+                    </a>
+                  ) : null}
+                </div>
+              ) : null}
             </form>
           </div>
         </div>
         <footer className="flex flex-col gap-3 py-8 text-sm font-semibold text-[#7A7A7A] sm:flex-row sm:items-center sm:justify-between">
           <span>Copyright {new Date().getFullYear()} Printly. All rights reserved.</span>
-          <a className="focus-ring rounded-lg px-3 py-2 hover:bg-[#EAF2FF] hover:text-[#2F6BFF]" href={`mailto:${contactEmail}`}>
+          <a
+            className="focus-ring rounded-lg px-3 py-2 hover:bg-[#EAF2FF] hover:text-[#2F6BFF]"
+            href={`mailto:${contactEmail}`}
+            onClick={handleEmailClick}
+          >
             {contactEmail}
           </a>
         </footer>
