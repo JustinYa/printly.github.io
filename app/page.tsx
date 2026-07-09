@@ -232,41 +232,40 @@ export default function Home() {
   }
 
   return (
-    <main id="top" className="min-h-screen overflow-hidden bg-white text-[#18181B]">
-      <header className="container-page flex py-8">
+    <main id="top" className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
+      <header className="container-page flex justify-center py-6 sm:justify-start sm:py-7 lg:py-8">
         <Image
           src={assetPath("/images/printly-logo-transparent.png")}
           alt="Printly"
           width={1242}
           height={388}
           priority
-          sizes="288px"
-          className="h-auto w-56 object-contain sm:w-64 lg:w-72"
+          sizes="(min-width: 1024px) 288px, (min-width: 640px) 256px, 208px"
+          className="h-auto w-52 object-contain sm:w-64 lg:w-72"
         />
       </header>
 
-      <section className="container-page grid gap-12 pb-16 pt-0 lg:grid-cols-[0.45fr_0.55fr] lg:items-start lg:pb-24 lg:pt-0">
-        <div>
-          <p className="text-[13px] font-extrabold uppercase text-[#2F6BFF]">
+      <section className="container-page grid gap-10 pb-16 pt-1 sm:gap-12 sm:pb-20 lg:grid-cols-[0.45fr_0.55fr] lg:items-center lg:pb-24 lg:pt-0">
+        <div className="mx-auto max-w-xl text-center sm:text-left lg:mx-0">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
             FDM 3D Printing
           </p>
-          <h1 className="mt-5 max-w-[28rem] text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:text-4xl">
-            Custom FDM
+          <h1 className="mx-auto mt-4 max-w-[28rem] text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:mx-0 sm:text-4xl">
+            Bring Your{" "}
+            <span className="text-[#2F6BFF]">Ideas</span>
             <br />
-            Printing.
-            <br />
-            <span className="text-[#2F6BFF]">Made Simple.</span>
+            To <span className="text-[#2F6BFF]">Life</span>
           </h1>
-          <p className="mt-6 max-w-lg text-base leading-[1.6] text-[#555555] sm:text-lg">
-            Upload your model, choose your options, and we will take care of the
-            rest with a clear quote before printing.
+          <p className="mx-auto mt-5 max-w-lg text-base leading-[1.65] text-[#555555] sm:mx-0 sm:mt-6 sm:text-lg">
+            Professional design, prototyping, and custom 3D printing &mdash; all
+            in one place.
           </p>
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
             <a
               href={quoteFormUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="focus-ring inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
+              className="focus-ring inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6] sm:w-auto"
             >
               <Icon name="upload" className="size-5" />
               Upload Your Model
@@ -289,12 +288,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container-page pb-24">
-        <div className="grid max-w-4xl gap-8 md:grid-cols-3">
+      <section className="container-page pb-20 sm:pb-24">
+        <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-3 lg:mx-0 lg:max-w-4xl">
           {featureHighlights.map((feature) => (
             <div
               key={feature.title}
-              className="flex items-center gap-4 md:border-r md:border-[#ECEFF5] md:pr-8 last:md:border-r-0"
+              className="flex items-center gap-4 sm:border-r sm:border-[#ECEFF5] sm:pr-6 last:sm:border-r-0 lg:pr-8"
             >
               <div className="grid size-12 shrink-0 place-items-center text-[#2F6BFF]">
                 <Icon name={feature.icon} className="size-8" />
@@ -312,17 +311,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#F8FAFD] py-24 sm:py-28">
+      <section className="bg-[#F8FAFD] py-20 sm:py-24 lg:py-28">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[13px] font-extrabold uppercase text-[#2F6BFF]">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
               Services
             </p>
             <h2 className="mt-3 text-3xl font-extrabold leading-tight text-[#18181B] sm:text-4xl">
               What We Offer
             </h2>
           </div>
-          <div className="mx-auto mt-12 grid max-w-6xl gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
             {services.map((service) => (
               <div
                 key={service.title}
@@ -343,20 +342,20 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="how" className="container-page py-24 sm:py-28">
+      <section id="how" className="container-page py-20 sm:py-24 lg:py-28">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-[13px] font-extrabold uppercase text-[#2F6BFF]">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
             How It Works
           </p>
           <h2 className="mt-3 text-3xl font-extrabold leading-tight text-[#18181B] sm:text-4xl">
             Four Simple Steps
           </h2>
         </div>
-        <div className="mx-auto mt-12 grid max-w-6xl gap-8 md:grid-cols-4">
+        <div className="mx-auto mt-10 grid max-w-6xl gap-8 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
             <div key={step.title} className="relative text-center">
               {index < steps.length - 1 ? (
-                <div className="absolute left-[calc(50%+3rem)] top-10 hidden h-px w-[calc(100%-6rem)] border-t border-dashed border-[#ECEFF5] md:block" />
+                <div className="absolute left-[calc(50%+3rem)] top-10 hidden h-px w-[calc(100%-6rem)] border-t border-dashed border-[#ECEFF5] lg:block" />
               ) : null}
               <div className="relative z-10 mx-auto grid size-20 place-items-center rounded-full bg-[#EAF2FF] text-[#2F6BFF]">
                 <span className="absolute -top-2 right-1 grid size-6 place-items-center rounded-full bg-[#2F6BFF] text-xs font-extrabold text-white">
@@ -375,10 +374,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="quote" className="container-page pb-10 pt-4 sm:pb-12">
+      <section id="quote" className="container-page pb-8 pt-0 sm:pb-12">
         <div className="overflow-hidden rounded-lg border border-[#ECEFF5] bg-white shadow-soft">
           <div className="grid lg:grid-cols-[0.31fr_0.69fr]">
-            <aside className="bg-[#F8FAFD] p-8 sm:p-10">
+            <aside className="bg-[#F8FAFD] p-6 sm:p-10">
               <h2 className="text-3xl font-extrabold leading-tight text-[#18181B] sm:text-4xl">
                 Get
                 <br />
@@ -390,7 +389,7 @@ export default function Home() {
                 <br />
                 We are here to help.
               </p>
-              <div className="mt-28 border-t border-[#ECEFF5] pt-8 text-sm">
+              <div className="mt-12 border-t border-[#ECEFF5] pt-8 text-sm sm:mt-20 lg:mt-28">
                 <p className="font-extrabold text-[#18181B]">
                   Need urgent help?
                 </p>
@@ -412,9 +411,9 @@ export default function Home() {
               </div>
             </aside>
 
-            <div className="grid content-center gap-6 p-6 sm:p-8">
-              <div className="p-2 sm:p-4">
-                <h3 className="max-w-xl text-4xl font-extrabold leading-[1.08] text-[#18181B] sm:text-5xl">
+            <div className="grid content-center gap-6 p-6 sm:p-8 lg:p-10">
+              <div className="p-0 sm:p-2 lg:p-4">
+                <h3 className="max-w-xl text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:text-5xl">
                   Tell us how we
                   <br />
                   can help<span className="text-[#2F6BFF]">.</span>
@@ -428,7 +427,7 @@ export default function Home() {
                   href={supportFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="focus-ring mt-7 inline-flex min-h-[56px] min-w-72 items-center justify-between gap-8 rounded-lg bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
+                  className="focus-ring mt-7 inline-flex min-h-[56px] w-full min-w-0 items-center justify-between gap-6 rounded-lg bg-[#2F6BFF] px-6 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6] sm:w-auto sm:min-w-72 sm:px-7"
                 >
                   <span className="inline-flex items-center gap-3">
                     <Icon name="mail" className="size-5" />
@@ -437,12 +436,12 @@ export default function Home() {
                   <span aria-hidden="true">-&gt;</span>
                 </a>
                 <p className="mt-5 text-xs font-semibold text-[#7A7A7A]">
-                  Secure &nbsp;•&nbsp; Powered by Google Forms
+                  Secure &nbsp;&middot;&nbsp; Powered by Google Forms
                 </p>
               </div>
 
               <div className="mt-4 border-t border-[#ECEFF5] pt-8">
-                <div className="grid gap-6 md:grid-cols-3">
+                <div className="grid gap-6 sm:grid-cols-3">
                 {[
                   {
                     title: "Upload Files",
@@ -462,7 +461,7 @@ export default function Home() {
                 ].map((item) => (
                   <div
                     key={item.title}
-                    className="border-[#ECEFF5] md:border-r md:pr-8 last:md:border-r-0"
+                    className="border-[#ECEFF5] sm:border-r sm:pr-6 last:sm:border-r-0 lg:pr-8"
                   >
                     <div className="text-[#2F6BFF]">
                       <Icon name={item.icon} className="size-9" />
@@ -480,10 +479,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <footer className="flex flex-col gap-3 py-8 text-sm font-semibold text-[#7A7A7A] sm:flex-row sm:items-center sm:justify-between">
+        <footer className="flex flex-col gap-3 py-8 text-center text-sm font-semibold text-[#7A7A7A] sm:flex-row sm:items-center sm:justify-between sm:text-left">
           <span>Copyright {new Date().getFullYear()} Printly. All rights reserved.</span>
           <a
-            className="focus-ring rounded-lg px-3 py-2 hover:bg-[#EAF2FF] hover:text-[#2F6BFF]"
+            className="focus-ring break-all rounded-lg px-3 py-2 hover:bg-[#EAF2FF] hover:text-[#2F6BFF]"
             href={`mailto:${contactEmail}`}
             onClick={handleEmailClick}
           >
