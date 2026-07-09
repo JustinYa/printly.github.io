@@ -11,6 +11,8 @@ const supportFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdy8woehAlDrSA1wL-Ksqe0MGnCQ2zHcIV5OfGymYANGYE_tA/viewform?usp=publish-editor";
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
+type PrintServiceId = "fdm" | "resin";
+
 type IconName =
   | "shield"
   | "lock"
@@ -21,7 +23,69 @@ type IconName =
   | "package"
   | "upload"
   | "mail"
-  | "check";
+  | "check"
+  | "chevronLeft"
+  | "chevronRight";
+
+const heroSlides: Array<{
+  label: string;
+  src: string;
+  alt: string;
+}> = [
+  {
+    label: "FDM studio",
+    src: "/images/fdm-studio-hero.png",
+    alt: "FDM and resin 3D printing studio with a printer producing a blue part"
+  },
+  {
+    label: "FDM parts",
+    src: "/images/fdm-carousel.png",
+    alt: "FDM printer producing a blue prototype part with filament and samples nearby"
+  },
+  {
+    label: "Resin details",
+    src: "/images/resin-carousel.png",
+    alt: "Resin printer workspace with detailed gray printed models and resin tools"
+  }
+];
+
+const printServiceOptions: Array<{
+  id: PrintServiceId;
+  label: string;
+  description: string;
+  materials: string[];
+  colors: Array<{
+    name: string;
+    value: string;
+  }>;
+}> = [
+  {
+    id: "fdm",
+    label: "FDM",
+    description: "Durable functional prints for prototypes, fixtures, and everyday parts.",
+    materials: ["PLA", "PETG", "ABS", "ASA", "TPU"],
+    colors: [
+      { name: "Black", value: "#18181B" },
+      { name: "White", value: "#FFFFFF" },
+      { name: "Gray", value: "#8A8F98" },
+      { name: "Blue", value: "#2F6BFF" },
+      { name: "Red", value: "#EF4444" }
+    ]
+  },
+  {
+    id: "resin",
+    label: "Resin",
+    description: "High-detail prints for miniatures, smooth prototypes, and display models.",
+    materials: ["Standard Resin", "Tough Resin", "Flexible Resin", "High-detail Resin"],
+    colors: [
+      { name: "Gray", value: "#8A8F98" },
+      { name: "White", value: "#FFFFFF" },
+      { name: "Black", value: "#18181B" },
+      { name: "Clear", value: "#DDEAFB" },
+      { name: "Translucent Blue", value: "#8EC5FF" }
+    ]
+  }
+];
 
 const featureHighlights: Array<{
   title: string;
@@ -30,7 +94,7 @@ const featureHighlights: Array<{
 }> = [
   {
     title: "High Quality",
-    description: "Precision FDM prints",
+    description: "Precision FDM and resin prints",
     icon: "shield"
   },
   {
@@ -42,33 +106,6 @@ const featureHighlights: Array<{
     title: "Fast Turnaround",
     description: "Reliable service",
     icon: "bolt"
-  }
-];
-
-const services: Array<{
-  title: string;
-  description: string;
-  icon: IconName;
-}> = [
-  {
-    title: "FDM 3D Printing",
-    description: "Strong, durable parts with practical layer control.",
-    icon: "cube"
-  },
-  {
-    title: "Material Options",
-    description: "PLA, PETG, ABS, ASA, and TPU for different uses.",
-    icon: "layers"
-  },
-  {
-    title: "Color Choices",
-    description: "Pick standard colors or describe a custom filament.",
-    icon: "spark"
-  },
-  {
-    title: "Pickup & Shipping",
-    description: "Local pickup or shipping after your quote is approved.",
-    icon: "package"
   }
 ];
 
@@ -89,7 +126,7 @@ const steps: Array<{
   },
   {
     title: "Print",
-    description: "Once approved, we produce your FDM order.",
+    description: "Once approved, we produce your FDM or resin order.",
     icon: "check"
   },
   {
@@ -208,6 +245,18 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
           <path d="M20 6 9 17l-5-5" />
         </svg>
       );
+    case "chevronLeft":
+      return (
+        <svg {...common}>
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+      );
+    case "chevronRight":
+      return (
+        <svg {...common}>
+          <path d="m9 18 6-6-6-6" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -215,6 +264,24 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
 
 export default function Home() {
   const [emailNotice, setEmailNotice] = useState("");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedPrintService, setSelectedPrintService] =
+    useState<PrintServiceId>("fdm");
+  const selectedService = printServiceOptions.find(
+    (service) => service.id === selectedPrintService
+  ) ?? printServiceOptions[0];
+
+  function showPreviousSlide() {
+    setCurrentSlide((slide) =>
+      slide === 0 ? heroSlides.length - 1 : slide - 1
+    );
+  }
+
+  function showNextSlide() {
+    setCurrentSlide((slide) =>
+      slide === heroSlides.length - 1 ? 0 : slide + 1
+    );
+  }
 
   function handleEmailClick(event: MouseEvent<HTMLAnchorElement>) {
     event.currentTarget.blur();
@@ -246,7 +313,7 @@ export default function Home() {
       <section className="container-page grid gap-10 pb-16 pt-1 sm:gap-12 sm:pb-20 lg:grid-cols-[0.45fr_0.55fr] lg:items-center lg:pb-24 lg:pt-0">
         <div className="mx-auto max-w-xl text-center sm:text-left lg:mx-0">
           <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
-            FDM 3D Printing
+            Resin and FDM 3D Printing
           </p>
           <h1 className="mx-auto mt-4 max-w-[28rem] text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:mx-0 sm:text-4xl">
             Bring Your{" "}
@@ -272,16 +339,57 @@ export default function Home() {
         </div>
 
         <div className="relative mx-auto w-full max-w-[40rem] lg:ml-auto">
-          <div className="relative overflow-hidden rounded-lg">
-            <Image
-              src={assetPath("/images/fdm-studio-hero.png")}
-              alt="FDM 3D printing studio with a printer producing a blue part"
-              width={1448}
-              height={1086}
-              priority
-              sizes="(min-width: 1024px) 52vw, 92vw"
-              className="h-auto w-full object-cover"
-            />
+          <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft">
+            {heroSlides.map((slide, index) => (
+              <Image
+                key={slide.src}
+                src={assetPath(slide.src)}
+                alt={slide.alt}
+                fill
+                priority={index === 0}
+                sizes="(min-width: 1024px) 52vw, 92vw"
+                className={`object-cover transition-opacity duration-500 ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={index === currentSlide ? undefined : true}
+              />
+            ))}
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/25 to-transparent" />
+            <button
+              type="button"
+              aria-label="Previous photo"
+              onClick={showPreviousSlide}
+              className="focus-ring absolute left-4 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#18181B] shadow-soft transition hover:-translate-x-0.5 hover:text-[#2F6BFF]"
+            >
+              <Icon name="chevronLeft" className="size-6" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next photo"
+              onClick={showNextSlide}
+              className="focus-ring absolute right-4 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#18181B] shadow-soft transition hover:translate-x-0.5 hover:text-[#2F6BFF]"
+            >
+              <Icon name="chevronRight" className="size-6" />
+            </button>
+            <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2">
+              {heroSlides.map((slide, index) => (
+                <button
+                  key={slide.src}
+                  type="button"
+                  aria-label={`Show ${slide.label}`}
+                  aria-current={index === currentSlide ? "true" : undefined}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`focus-ring h-2.5 rounded-full transition-all ${
+                    index === currentSlide
+                      ? "w-8 bg-white"
+                      : "w-2.5 bg-white/70 hover:bg-white"
+                  }`}
+                />
+              ))}
+            </div>
+            <p className="sr-only" aria-live="polite">
+              Showing {heroSlides[currentSlide].label}
+            </p>
           </div>
         </div>
       </section>
@@ -320,22 +428,99 @@ export default function Home() {
             </h2>
           </div>
           <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
-            {services.map((service) => (
-              <div
-                key={service.title}
-                className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]"
-              >
-                <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
-                  <Icon name={service.icon} className="size-10" />
-                </div>
-                <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
-                  {service.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-[#555555]">
-                  {service.description}
-                </p>
+            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
+              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
+                <Icon name="cube" className="size-10" />
               </div>
-            ))}
+              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
+                Printing services
+              </h3>
+              <p className="mt-3 min-h-[72px] text-sm leading-6 text-[#555555]">
+                {selectedService.description}
+              </p>
+              <div
+                className="mt-5 grid grid-cols-2 gap-1 rounded-lg bg-[#F8FAFD] p-1"
+                role="group"
+                aria-label="Printing service type"
+              >
+                {printServiceOptions.map((service) => (
+                  <button
+                    key={service.id}
+                    type="button"
+                    aria-pressed={service.id === selectedPrintService}
+                    onClick={() => setSelectedPrintService(service.id)}
+                    className={`focus-ring min-h-10 rounded-md px-3 text-sm font-extrabold transition ${
+                      service.id === selectedPrintService
+                        ? "bg-[#2F6BFF] text-white shadow-[0_8px_18px_rgba(47,107,255,0.22)]"
+                        : "text-[#555555] hover:bg-white hover:text-[#2F6BFF]"
+                    }`}
+                  >
+                    {service.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
+              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
+                <Icon name="layers" className="size-10" />
+              </div>
+              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
+                Material Options
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-[#555555]">
+                Available choices for {selectedService.label}.
+              </p>
+              <div className="mt-5 flex min-h-[92px] flex-wrap items-center justify-center gap-2">
+                {selectedService.materials.map((material) => (
+                  <span
+                    key={material}
+                    className="rounded-full border border-[#ECEFF5] bg-[#F8FAFD] px-3 py-2 text-xs font-extrabold text-[#18181B]"
+                  >
+                    {material}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
+              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
+                <Icon name="spark" className="size-10" />
+              </div>
+              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
+                Color Choices
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-[#555555]">
+                Available choices for {selectedService.label}.
+              </p>
+              <div className="mt-5 flex min-h-[92px] flex-wrap items-center justify-center gap-2">
+                {selectedService.colors.map((color) => (
+                  <span
+                    key={color.name}
+                    className="inline-flex items-center gap-2 rounded-full border border-[#ECEFF5] bg-[#F8FAFD] px-3 py-2 text-xs font-extrabold text-[#18181B]"
+                  >
+                    <span
+                      className="size-4 rounded-full border border-[#D9DEE8]"
+                      style={{ backgroundColor: color.value }}
+                      aria-hidden="true"
+                    />
+                    {color.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
+              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
+                <Icon name="package" className="size-10" />
+              </div>
+              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
+                Pickup & Shipping
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-[#555555]">
+                Local pickup or shipping after your quote is approved.
+              </p>
+            </div>
           </div>
         </div>
       </section>
