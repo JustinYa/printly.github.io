@@ -248,7 +248,7 @@ export default function Home() {
           <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
             FDM 3D Printing
           </p>
-          <h1 className="mx-auto mt-4 max-w-[28rem] text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:mx-0 sm:text-4xl">
+          <h1 className="mx-auto mt-4 inline-block max-w-[28rem] text-left text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:mx-0 sm:block sm:text-4xl">
             Bring Your{" "}
             <span className="text-[#2F6BFF]">Ideas</span>
             <br />
