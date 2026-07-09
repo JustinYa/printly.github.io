@@ -75,14 +75,14 @@ const printServiceOptions: Array<{
   {
     id: "resin",
     label: "Resin",
-    description: "High-detail prints for miniatures, smooth prototypes, and display models.",
-    materials: ["Standard Resin", "Tough Resin", "Flexible Resin", "High-detail Resin"],
+    description: "High-detail prints for miniatures, prototypes, and display models.",
+    materials: ["Standard", "Tough", "Flexible", "High-detail"],
     colors: [
       { name: "Gray", value: "#8A8F98" },
       { name: "White", value: "#FFFFFF" },
       { name: "Black", value: "#18181B" },
       { name: "Clear", value: "#DDEAFB" },
-      { name: "Translucent Blue", value: "#8EC5FF" }
+      { name: "Translucent", value: "#8EC5FF" }
     ]
   }
 ];
@@ -298,7 +298,7 @@ export default function Home() {
 
   return (
     <main id="top" className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
-      <header className="container-page flex justify-center py-6 sm:justify-start sm:py-7 lg:py-8">
+      <header className="container-page flex justify-center pb-4 pt-8 sm:justify-start sm:pb-5 sm:pt-10 lg:pb-6 lg:pt-12">
         <Image
           src={assetPath("/images/printly-logo-transparent.png")}
           alt="Printly"
