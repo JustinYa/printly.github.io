@@ -9,9 +9,7 @@ const quoteFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdqbuDsPwCyFewc5asZn3jofF2rcWo1aD5FYC54Amrs8gEOTw/viewform?usp=publish-editor";
 const supportFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdy8woehAlDrSA1wL-Ksqe0MGnCQ2zHcIV5OfGymYANGYE_tA/viewform?usp=publish-editor";
-const siteBasePath =
-  process.env.NEXT_PUBLIC_BASE_PATH ??
-  (process.env.NODE_ENV === "production" ? "/printly.github.io" : "");
+const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 type IconName =
   | "shield"

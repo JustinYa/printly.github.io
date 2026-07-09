@@ -1,13 +1,11 @@
-const githubPagesBasePath =
-  process.env.NEXT_PUBLIC_BASE_PATH ??
-  (process.env.NODE_ENV === "production" ? "/printly.github.io" : "");
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   output: "export",
   trailingSlash: true,
-  basePath: githubPagesBasePath,
-  assetPrefix: githubPagesBasePath,
+  basePath,
+  assetPrefix: basePath,
   images: {
     unoptimized: true
   }
