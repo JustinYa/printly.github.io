@@ -27,25 +27,35 @@ type IconName =
   | "chevronLeft"
   | "chevronRight";
 
-const heroSlides: Array<{
+const showcaseExamples: Array<{
   label: string;
+  title: string;
   src: string;
   alt: string;
 }> = [
   {
-    label: "FDM studio",
-    src: "/images/fdm-studio-hero.png",
-    alt: "FDM and resin 3D printing studio with a printer producing a blue part"
+    label: "Resin",
+    title: "Painted Bust",
+    src: "/images/showcase-painted-bust.jpg",
+    alt: "Painted resin character bust displayed in a hobby workspace"
   },
   {
-    label: "FDM parts",
-    src: "/images/fdm-carousel.png",
-    alt: "FDM printer producing a blue prototype part with filament and samples nearby"
+    label: "Resin",
+    title: "Custom Figures",
+    src: "/images/showcase-miniatures.jpg",
+    alt: "Four custom white resin figures on a black background"
   },
   {
-    label: "Resin details",
-    src: "/images/resin-carousel.png",
-    alt: "Resin printer workspace with detailed gray printed models and resin tools"
+    label: "FDM",
+    title: "Wiper Part",
+    src: "/images/showcase-wiper.jpg",
+    alt: "FDM printed discontinued car windshield wiper replacement part"
+  },
+  {
+    label: "FDM",
+    title: "Tennis Grip",
+    src: "/images/showcase-tennis-grip.jpg",
+    alt: "FDM printed tennis racket grip replacement"
   }
 ];
 
@@ -264,22 +274,23 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
 
 export default function Home() {
   const [emailNotice, setEmailNotice] = useState("");
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentExample, setCurrentExample] = useState(0);
   const [selectedPrintService, setSelectedPrintService] =
     useState<PrintServiceId>("fdm");
   const selectedService = printServiceOptions.find(
     (service) => service.id === selectedPrintService
   ) ?? printServiceOptions[0];
+  const currentShowcase = showcaseExamples[currentExample];
 
-  function showPreviousSlide() {
-    setCurrentSlide((slide) =>
-      slide === 0 ? heroSlides.length - 1 : slide - 1
+  function showPreviousExample() {
+    setCurrentExample((example) =>
+      example === 0 ? showcaseExamples.length - 1 : example - 1
     );
   }
 
-  function showNextSlide() {
-    setCurrentSlide((slide) =>
-      slide === heroSlides.length - 1 ? 0 : slide + 1
+  function showNextExample() {
+    setCurrentExample((example) =>
+      example === showcaseExamples.length - 1 ? 0 : example + 1
     );
   }
 
@@ -338,57 +349,59 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-[40rem] lg:ml-auto">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft">
-            {heroSlides.map((slide, index) => (
-              <Image
-                key={slide.src}
-                src={assetPath(slide.src)}
-                alt={slide.alt}
-                fill
-                priority={index === 0}
-                sizes="(min-width: 1024px) 52vw, 92vw"
-                className={`object-cover transition-opacity duration-500 ${
-                  index === currentSlide ? "opacity-100" : "opacity-0"
-                }`}
-                aria-hidden={index === currentSlide ? undefined : true}
-              />
-            ))}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/25 to-transparent" />
+        <div className="mx-auto w-full max-w-[28rem] lg:ml-auto">
+          <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft">
+            <Image
+              src={assetPath(currentShowcase.src)}
+              alt={currentShowcase.alt}
+              fill
+              priority
+              sizes="(min-width: 1024px) 28rem, 92vw"
+              className="object-cover"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
             <button
               type="button"
-              aria-label="Previous photo"
-              onClick={showPreviousSlide}
+              aria-label="Previous example"
+              onClick={showPreviousExample}
               className="focus-ring absolute left-4 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#18181B] shadow-soft transition hover:-translate-x-0.5 hover:text-[#2F6BFF]"
             >
               <Icon name="chevronLeft" className="size-6" />
             </button>
             <button
               type="button"
-              aria-label="Next photo"
-              onClick={showNextSlide}
+              aria-label="Next example"
+              onClick={showNextExample}
               className="focus-ring absolute right-4 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#18181B] shadow-soft transition hover:translate-x-0.5 hover:text-[#2F6BFF]"
             >
               <Icon name="chevronRight" className="size-6" />
             </button>
-            <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2">
-              {heroSlides.map((slide, index) => (
-                <button
-                  key={slide.src}
-                  type="button"
-                  aria-label={`Show ${slide.label}`}
-                  aria-current={index === currentSlide ? "true" : undefined}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`focus-ring h-2.5 rounded-full transition-all ${
-                    index === currentSlide
-                      ? "w-8 bg-white"
-                      : "w-2.5 bg-white/70 hover:bg-white"
-                  }`}
-                />
-              ))}
+            <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-5">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/70">
+                {currentShowcase.label}
+              </p>
+              <h2 className="mt-1 text-xl font-extrabold leading-tight sm:text-2xl">
+                {currentShowcase.title}
+              </h2>
+              <div className="mt-3 flex gap-2">
+                {showcaseExamples.map((example, index) => (
+                  <button
+                    key={example.src}
+                    type="button"
+                    aria-label={`Show ${example.title}`}
+                    aria-current={index === currentExample ? "true" : undefined}
+                    onClick={() => setCurrentExample(index)}
+                    className={`focus-ring h-2.5 rounded-full transition-all ${
+                      index === currentExample
+                        ? "w-8 bg-white"
+                        : "w-2.5 bg-white/70 hover:bg-white"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
             <p className="sr-only" aria-live="polite">
-              Showing {heroSlides[currentSlide].label}
+              Showing {currentShowcase.title}
             </p>
           </div>
         </div>
