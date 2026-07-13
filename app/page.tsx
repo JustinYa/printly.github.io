@@ -365,17 +365,17 @@ export default function Home() {
               type="button"
               aria-label="Previous example"
               onClick={showPreviousExample}
-              className="focus-ring absolute left-4 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#18181B] shadow-soft transition hover:-translate-x-0.5 hover:text-[#2F6BFF]"
+              className="focus-ring absolute left-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:-translate-x-0.5 hover:bg-black/35 hover:text-white"
             >
-              <Icon name="chevronLeft" className="size-6" />
+              <Icon name="chevronLeft" className="size-4" />
             </button>
             <button
               type="button"
               aria-label="Next example"
               onClick={showNextExample}
-              className="focus-ring absolute right-4 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/95 text-[#18181B] shadow-soft transition hover:translate-x-0.5 hover:text-[#2F6BFF]"
+              className="focus-ring absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:translate-x-0.5 hover:bg-black/35 hover:text-white"
             >
-              <Icon name="chevronRight" className="size-6" />
+              <Icon name="chevronRight" className="size-4" />
             </button>
             <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-5">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/70">
