@@ -48,7 +48,7 @@ const showcaseExamples: Array<{
   {
     label: "FDM",
     title: "Wiper Part",
-    src: "/images/showcase-wiper.jpg",
+    src: "/images/showcase-wiper-custom.jpg",
     alt: "FDM printed discontinued car windshield wiper replacement part"
   },
   {
