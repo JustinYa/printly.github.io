@@ -77,9 +77,12 @@ const printServiceOptions: Array<{
     colors: [
       { name: "Black", value: "#18181B" },
       { name: "White", value: "#FFFFFF" },
-      { name: "Gray", value: "#8A8F98" },
+      { name: "Green", value: "#22C55E" },
+      { name: "Red", value: "#EF4444" },
       { name: "Blue", value: "#2F6BFF" },
-      { name: "Red", value: "#EF4444" }
+      { name: "Purple", value: "#8B5CF6" },
+      { name: "Gold", value: "#D4A017" },
+      { name: "Copper", value: "#B87333" }
     ]
   },
   {
@@ -88,11 +91,9 @@ const printServiceOptions: Array<{
     description: "High-detail prints for miniatures, prototypes, and display models.",
     materials: ["Standard", "Tough", "Flexible", "High-detail"],
     colors: [
-      { name: "Gray", value: "#8A8F98" },
-      { name: "White", value: "#FFFFFF" },
       { name: "Black", value: "#18181B" },
-      { name: "Clear", value: "#DDEAFB" },
-      { name: "Translucent", value: "#8EC5FF" }
+      { name: "White", value: "#FFFFFF" },
+      { name: "Gray", value: "#8A8F98" }
     ]
   }
 ];
