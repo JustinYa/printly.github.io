@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import type { FocusEvent, MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
 
 const contactEmail = "contact.printlylab@gmail.com";
@@ -294,7 +294,6 @@ export default function Home() {
   const [emailNotice, setEmailNotice] = useState("");
   const [currentExample, setCurrentExample] = useState(0);
   const [isShowcaseAutoplayEnabled, setIsShowcaseAutoplayEnabled] = useState(true);
-  const [isShowcaseInteracting, setIsShowcaseInteracting] = useState(false);
   const [selectedPrintService, setSelectedPrintService] =
     useState<PrintServiceId>("fdm");
   const selectedService = printServiceOptions.find(
@@ -303,7 +302,7 @@ export default function Home() {
   const currentShowcase = showcaseExamples[currentExample];
 
   useEffect(() => {
-    if (!isShowcaseAutoplayEnabled || isShowcaseInteracting) {
+    if (!isShowcaseAutoplayEnabled) {
       return;
     }
 
@@ -312,7 +311,7 @@ export default function Home() {
     }, showcaseAutoplayDelay);
 
     return () => window.clearTimeout(timeoutId);
-  }, [currentExample, isShowcaseAutoplayEnabled, isShowcaseInteracting]);
+  }, [currentExample, isShowcaseAutoplayEnabled]);
 
   function showPreviousExample() {
     setCurrentExample((example) =>
@@ -324,12 +323,6 @@ export default function Home() {
     setCurrentExample((example) =>
       example === showcaseExamples.length - 1 ? 0 : example + 1
     );
-  }
-
-  function handleShowcaseBlur(event: FocusEvent<HTMLDivElement>) {
-    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-      setIsShowcaseInteracting(false);
-    }
   }
 
   function handleEmailClick(event: MouseEvent<HTMLAnchorElement>) {
@@ -392,10 +385,6 @@ export default function Home() {
             role="region"
             aria-roledescription="carousel"
             aria-label="Print examples"
-            onMouseEnter={() => setIsShowcaseInteracting(true)}
-            onMouseLeave={() => setIsShowcaseInteracting(false)}
-            onFocusCapture={() => setIsShowcaseInteracting(true)}
-            onBlurCapture={handleShowcaseBlur}
             className="relative aspect-[3/4] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft"
           >
             {showcaseExamples.map((example, index) => (
