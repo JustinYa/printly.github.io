@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import type { MouseEvent } from "react";
-import { useState } from "react";
+import type { FocusEvent, MouseEvent } from "react";
+import { useEffect, useState } from "react";
 
 const contactEmail = "contact.printlylab@gmail.com";
 const quoteFormUrl =
@@ -25,7 +25,11 @@ type IconName =
   | "mail"
   | "check"
   | "chevronLeft"
-  | "chevronRight";
+  | "chevronRight"
+  | "play"
+  | "pause";
+
+const showcaseAutoplayDelay = 5500;
 
 const showcaseExamples: Array<{
   label: string;
@@ -268,6 +272,19 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
           <path d="m9 18 6-6-6-6" />
         </svg>
       );
+    case "play":
+      return (
+        <svg {...common} fill="currentColor" stroke="none">
+          <path d="m8 5 11 7-11 7V5Z" />
+        </svg>
+      );
+    case "pause":
+      return (
+        <svg {...common} fill="currentColor" stroke="none">
+          <rect width="4" height="14" x="6" y="5" rx="1" />
+          <rect width="4" height="14" x="14" y="5" rx="1" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -276,12 +293,26 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
 export default function Home() {
   const [emailNotice, setEmailNotice] = useState("");
   const [currentExample, setCurrentExample] = useState(0);
+  const [isShowcaseAutoplayEnabled, setIsShowcaseAutoplayEnabled] = useState(true);
+  const [isShowcaseInteracting, setIsShowcaseInteracting] = useState(false);
   const [selectedPrintService, setSelectedPrintService] =
     useState<PrintServiceId>("fdm");
   const selectedService = printServiceOptions.find(
     (service) => service.id === selectedPrintService
   ) ?? printServiceOptions[0];
   const currentShowcase = showcaseExamples[currentExample];
+
+  useEffect(() => {
+    if (!isShowcaseAutoplayEnabled || isShowcaseInteracting) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setCurrentExample((example) => (example + 1) % showcaseExamples.length);
+    }, showcaseAutoplayDelay);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [currentExample, isShowcaseAutoplayEnabled, isShowcaseInteracting]);
 
   function showPreviousExample() {
     setCurrentExample((example) =>
@@ -293,6 +324,12 @@ export default function Home() {
     setCurrentExample((example) =>
       example === showcaseExamples.length - 1 ? 0 : example + 1
     );
+  }
+
+  function handleShowcaseBlur(event: FocusEvent<HTMLDivElement>) {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      setIsShowcaseInteracting(false);
+    }
   }
 
   function handleEmailClick(event: MouseEvent<HTMLAnchorElement>) {
@@ -351,21 +388,38 @@ export default function Home() {
         </div>
 
         <div className="mx-auto w-full max-w-[28rem] lg:ml-auto">
-          <div className="relative aspect-[3/4] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft">
-            <Image
-              src={assetPath(currentShowcase.src)}
-              alt={currentShowcase.alt}
-              fill
-              priority
-              sizes="(min-width: 1024px) 28rem, 92vw"
-              className="object-cover"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
+          <div
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Print examples"
+            onMouseEnter={() => setIsShowcaseInteracting(true)}
+            onMouseLeave={() => setIsShowcaseInteracting(false)}
+            onFocusCapture={() => setIsShowcaseInteracting(true)}
+            onBlurCapture={handleShowcaseBlur}
+            className="relative aspect-[3/4] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft"
+          >
+            {showcaseExamples.map((example, index) => (
+              <Image
+                key={example.src}
+                src={assetPath(example.src)}
+                alt={index === currentExample ? example.alt : ""}
+                aria-hidden={index === currentExample ? undefined : true}
+                fill
+                priority={index === 0}
+                sizes="(min-width: 1024px) 28rem, 92vw"
+                className={`object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+                  index === currentExample
+                    ? "z-10 scale-100 opacity-100"
+                    : "z-0 scale-[1.015] opacity-0"
+                }`}
+              />
+            ))}
+            <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
             <button
               type="button"
               aria-label="Previous example"
               onClick={showPreviousExample}
-              className="focus-ring absolute left-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:-translate-x-0.5 hover:bg-black/35 hover:text-white"
+              className="focus-ring absolute left-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:-translate-x-0.5 hover:bg-black/35 hover:text-white"
             >
               <Icon name="chevronLeft" className="size-4" />
             </button>
@@ -373,18 +427,18 @@ export default function Home() {
               type="button"
               aria-label="Next example"
               onClick={showNextExample}
-              className="focus-ring absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:translate-x-0.5 hover:bg-black/35 hover:text-white"
+              className="focus-ring absolute right-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:translate-x-0.5 hover:bg-black/35 hover:text-white"
             >
               <Icon name="chevronRight" className="size-4" />
             </button>
-            <div className="absolute inset-x-0 bottom-0 p-4 text-white sm:p-5">
+            <div className="absolute inset-x-0 bottom-0 z-30 p-4 text-white sm:p-5">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/70">
                 {currentShowcase.label}
               </p>
               <h2 className="mt-1 text-xl font-extrabold leading-tight sm:text-2xl">
                 {currentShowcase.title}
               </h2>
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex items-center gap-2">
                 {showcaseExamples.map((example, index) => (
                   <button
                     key={example.src}
@@ -399,9 +453,32 @@ export default function Home() {
                     }`}
                   />
                 ))}
+                <button
+                  type="button"
+                  aria-label={
+                    isShowcaseAutoplayEnabled
+                      ? "Pause automatic slideshow"
+                      : "Play automatic slideshow"
+                  }
+                  title={
+                    isShowcaseAutoplayEnabled ? "Pause slideshow" : "Play slideshow"
+                  }
+                  onClick={() =>
+                    setIsShowcaseAutoplayEnabled((isEnabled) => !isEnabled)
+                  }
+                  className="focus-ring ml-1 grid size-7 place-items-center rounded-full bg-white/15 text-white/85 transition hover:bg-white/25 hover:text-white"
+                >
+                  <Icon
+                    name={isShowcaseAutoplayEnabled ? "pause" : "play"}
+                    className="size-3.5"
+                  />
+                </button>
               </div>
             </div>
-            <p className="sr-only" aria-live="polite">
+            <p
+              className="sr-only"
+              aria-live={isShowcaseAutoplayEnabled ? "off" : "polite"}
+            >
               Showing {currentShowcase.title}
             </p>
           </div>
