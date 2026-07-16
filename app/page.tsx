@@ -283,6 +283,7 @@ export default function Home() {
   const [previousExample, setPreviousExample] = useState<number | null>(null);
   const [showcaseDirection, setShowcaseDirection] =
     useState<ShowcaseDirection>("next");
+  const [isShowcaseHovered, setIsShowcaseHovered] = useState(false);
   const [selectedPrintService, setSelectedPrintService] =
     useState<PrintServiceId>("fdm");
   const selectedService = printServiceOptions.find(
@@ -291,6 +292,10 @@ export default function Home() {
   const currentShowcase = showcaseExamples[currentExample];
 
   useEffect(() => {
+    if (isShowcaseHovered) {
+      return;
+    }
+
     const timeoutId = window.setTimeout(() => {
       setPreviousExample(currentExample);
       setShowcaseDirection("next");
@@ -298,7 +303,7 @@ export default function Home() {
     }, showcaseAutoplayDelay);
 
     return () => window.clearTimeout(timeoutId);
-  }, [currentExample]);
+  }, [currentExample, isShowcaseHovered]);
 
   useEffect(() => {
     if (previousExample === null) {
@@ -397,6 +402,8 @@ export default function Home() {
             role="region"
             aria-roledescription="carousel"
             aria-label="Print examples"
+            onMouseEnter={() => setIsShowcaseHovered(true)}
+            onMouseLeave={() => setIsShowcaseHovered(false)}
             className="relative aspect-[3/4] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft"
           >
             {showcaseExamples.map((example, index) => {
