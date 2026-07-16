@@ -12,6 +12,7 @@ const supportFormUrl =
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 type PrintServiceId = "fdm" | "resin";
+type ShowcaseDirection = "next" | "previous";
 
 type IconName =
   | "shield"
@@ -25,11 +26,10 @@ type IconName =
   | "mail"
   | "check"
   | "chevronLeft"
-  | "chevronRight"
-  | "play"
-  | "pause";
+  | "chevronRight";
 
 const showcaseAutoplayDelay = 5500;
+const showcaseTransitionDuration = 650;
 
 const showcaseExamples: Array<{
   label: string;
@@ -272,19 +272,6 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
           <path d="m9 18 6-6-6-6" />
         </svg>
       );
-    case "play":
-      return (
-        <svg {...common} fill="currentColor" stroke="none">
-          <path d="m8 5 11 7-11 7V5Z" />
-        </svg>
-      );
-    case "pause":
-      return (
-        <svg {...common} fill="currentColor" stroke="none">
-          <rect width="4" height="14" x="6" y="5" rx="1" />
-          <rect width="4" height="14" x="14" y="5" rx="1" />
-        </svg>
-      );
     default:
       return null;
   }
@@ -293,7 +280,9 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
 export default function Home() {
   const [emailNotice, setEmailNotice] = useState("");
   const [currentExample, setCurrentExample] = useState(0);
-  const [isShowcaseAutoplayEnabled, setIsShowcaseAutoplayEnabled] = useState(true);
+  const [previousExample, setPreviousExample] = useState<number | null>(null);
+  const [showcaseDirection, setShowcaseDirection] =
+    useState<ShowcaseDirection>("next");
   const [selectedPrintService, setSelectedPrintService] =
     useState<PrintServiceId>("fdm");
   const selectedService = printServiceOptions.find(
@@ -302,26 +291,49 @@ export default function Home() {
   const currentShowcase = showcaseExamples[currentExample];
 
   useEffect(() => {
-    if (!isShowcaseAutoplayEnabled) {
-      return;
-    }
-
     const timeoutId = window.setTimeout(() => {
-      setCurrentExample((example) => (example + 1) % showcaseExamples.length);
+      setPreviousExample(currentExample);
+      setShowcaseDirection("next");
+      setCurrentExample((currentExample + 1) % showcaseExamples.length);
     }, showcaseAutoplayDelay);
 
     return () => window.clearTimeout(timeoutId);
-  }, [currentExample, isShowcaseAutoplayEnabled]);
+  }, [currentExample]);
+
+  useEffect(() => {
+    if (previousExample === null) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(
+      () => setPreviousExample(null),
+      showcaseTransitionDuration
+    );
+
+    return () => window.clearTimeout(timeoutId);
+  }, [currentExample, previousExample]);
+
+  function showExample(index: number, direction: ShowcaseDirection) {
+    if (index === currentExample) {
+      return;
+    }
+
+    setPreviousExample(currentExample);
+    setShowcaseDirection(direction);
+    setCurrentExample(index);
+  }
 
   function showPreviousExample() {
-    setCurrentExample((example) =>
-      example === 0 ? showcaseExamples.length - 1 : example - 1
+    showExample(
+      currentExample === 0 ? showcaseExamples.length - 1 : currentExample - 1,
+      "previous"
     );
   }
 
   function showNextExample() {
-    setCurrentExample((example) =>
-      example === showcaseExamples.length - 1 ? 0 : example + 1
+    showExample(
+      currentExample === showcaseExamples.length - 1 ? 0 : currentExample + 1,
+      "next"
     );
   }
 
@@ -387,22 +399,38 @@ export default function Home() {
             aria-label="Print examples"
             className="relative aspect-[3/4] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft"
           >
-            {showcaseExamples.map((example, index) => (
-              <Image
-                key={example.src}
-                src={assetPath(example.src)}
-                alt={index === currentExample ? example.alt : ""}
-                aria-hidden={index === currentExample ? undefined : true}
-                fill
-                priority={index === 0}
-                sizes="(min-width: 1024px) 28rem, 92vw"
-                className={`object-cover transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
-                  index === currentExample
-                    ? "z-10 scale-100 opacity-100"
-                    : "z-0 scale-[1.015] opacity-0"
-                }`}
-              />
-            ))}
+            {showcaseExamples.map((example, index) => {
+              const isCurrent = index === currentExample;
+              const isPrevious = index === previousExample;
+              let animationClass = "z-0 opacity-0";
+
+              if (isCurrent) {
+                animationClass =
+                  previousExample === null
+                    ? "z-10 translate-x-0"
+                    : showcaseDirection === "next"
+                      ? "z-10 showcase-slide-in-right"
+                      : "z-10 showcase-slide-in-left";
+              } else if (isPrevious) {
+                animationClass =
+                  showcaseDirection === "next"
+                    ? "z-10 showcase-slide-out-left"
+                    : "z-10 showcase-slide-out-right";
+              }
+
+              return (
+                <Image
+                  key={example.src}
+                  src={assetPath(example.src)}
+                  alt={isCurrent ? example.alt : ""}
+                  aria-hidden={isCurrent ? undefined : true}
+                  fill
+                  priority={index === 0}
+                  sizes="(min-width: 1024px) 28rem, 92vw"
+                  className={`object-cover ${animationClass}`}
+                />
+              );
+            })}
             <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
             <button
               type="button"
@@ -434,7 +462,12 @@ export default function Home() {
                     type="button"
                     aria-label={`Show ${example.title}`}
                     aria-current={index === currentExample ? "true" : undefined}
-                    onClick={() => setCurrentExample(index)}
+                    onClick={() =>
+                      showExample(
+                        index,
+                        index > currentExample ? "next" : "previous"
+                      )
+                    }
                     className={`focus-ring h-2.5 rounded-full transition-all ${
                       index === currentExample
                         ? "w-8 bg-white"
@@ -442,32 +475,9 @@ export default function Home() {
                     }`}
                   />
                 ))}
-                <button
-                  type="button"
-                  aria-label={
-                    isShowcaseAutoplayEnabled
-                      ? "Pause automatic slideshow"
-                      : "Play automatic slideshow"
-                  }
-                  title={
-                    isShowcaseAutoplayEnabled ? "Pause slideshow" : "Play slideshow"
-                  }
-                  onClick={() =>
-                    setIsShowcaseAutoplayEnabled((isEnabled) => !isEnabled)
-                  }
-                  className="focus-ring ml-1 grid size-7 place-items-center rounded-full bg-white/15 text-white/85 transition hover:bg-white/25 hover:text-white"
-                >
-                  <Icon
-                    name={isShowcaseAutoplayEnabled ? "pause" : "play"}
-                    className="size-3.5"
-                  />
-                </button>
               </div>
             </div>
-            <p
-              className="sr-only"
-              aria-live={isShowcaseAutoplayEnabled ? "off" : "polite"}
-            >
+            <p className="sr-only" aria-live="off">
               Showing {currentShowcase.title}
             </p>
           </div>

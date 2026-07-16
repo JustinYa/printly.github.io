@@ -28,6 +28,77 @@ body {
   background: var(--color-primary-light);
 }
 
+@keyframes showcase-slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes showcase-slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes showcase-slide-out-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes showcase-slide-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.showcase-slide-in-right,
+.showcase-slide-in-left,
+.showcase-slide-out-left,
+.showcase-slide-out-right {
+  animation-duration: 650ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.showcase-slide-in-right {
+  animation-name: showcase-slide-in-right;
+}
+
+.showcase-slide-in-left {
+  animation-name: showcase-slide-in-left;
+}
+
+.showcase-slide-out-left {
+  animation-name: showcase-slide-out-left;
+}
+
+.showcase-slide-out-right {
+  animation-name: showcase-slide-out-right;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase-slide-in-right,
+  .showcase-slide-in-left,
+  .showcase-slide-out-left,
+  .showcase-slide-out-right {
+    animation-duration: 1ms;
+  }
+}
+
 @layer components {
   .container-page {
     @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-20;
