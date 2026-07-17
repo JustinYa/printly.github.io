@@ -1,0 +1,24 @@
+{
+  "slug": "tennis-grip",
+  "title": "Tennis Grip",
+  "service": "FDM",
+  "category": "Ergonomic Prototype",
+  "summary": "A detailed overview of this custom tennis grip project will be added here.",
+  "coverImage": "/images/showcase-tennis-grip.jpg",
+  "imageAlt": "FDM printed tennis racket grip replacement",
+  "challenge": "Grip requirements, comfort goals, and the primary design challenge will be documented here.",
+  "approach": "Details about measurements, ergonomic iteration, material selection, and fit testing will be added here.",
+  "result": "Final fit, handling feedback, and key project takeaways will be added here.",
+  "specifications": [
+    { "label": "Process", "value": "FDM" },
+    { "label": "Material", "value": "To be confirmed" },
+    { "label": "Finish", "value": "As printed" },
+    { "label": "Application", "value": "Sporting Goods" },
+    { "label": "Dimensions", "value": "To be confirmed" },
+    { "label": "Turnaround", "value": "To be confirmed" }
+  ],
+  "gallery": [
+    { "src": "/images/showcase-tennis-grip.jpg", "alt": "Custom tennis grip project view" },
+    { "src": "/images/showcase-tennis-grip.jpg", "alt": "Custom tennis grip detail view" }
+  ]
+}

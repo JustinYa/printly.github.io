@@ -3,7 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://justinya.github.io"),
+  metadataBase: new URL("https://printlylab.com"),
   title: "Printly | Resin and FDM 3D Printing",
   description:
     "Minimal resin and FDM 3D printing quote page. Upload your model, choose material and color, and request a quote.",

@@ -1,0 +1,24 @@
+{
+  "slug": "wiper-part",
+  "title": "Discontinued Wiper Part",
+  "service": "FDM",
+  "category": "Functional Replacement",
+  "summary": "A detailed overview of this discontinued replacement part project will be added here.",
+  "coverImage": "/images/showcase-wiper-custom.jpg",
+  "imageAlt": "FDM printed discontinued car windshield wiper replacement part",
+  "challenge": "Vehicle context, fit requirements, and the unavailable original component will be documented here.",
+  "approach": "Details about measurement, part design, material selection, prototyping, and fit testing will be added here.",
+  "result": "Final fit, functional performance, and key project takeaways will be added here.",
+  "specifications": [
+    { "label": "Process", "value": "FDM" },
+    { "label": "Material", "value": "To be confirmed" },
+    { "label": "Finish", "value": "As printed" },
+    { "label": "Application", "value": "Automotive" },
+    { "label": "Dimensions", "value": "To be confirmed" },
+    { "label": "Turnaround", "value": "To be confirmed" }
+  ],
+  "gallery": [
+    { "src": "/images/showcase-wiper-custom.jpg", "alt": "Custom wiper replacement part project view" },
+    { "src": "/images/showcase-wiper-custom.jpg", "alt": "Custom wiper replacement part detail view" }
+  ]
+}

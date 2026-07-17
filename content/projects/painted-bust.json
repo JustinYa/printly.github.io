@@ -1,0 +1,24 @@
+{
+  "slug": "painted-bust",
+  "title": "Painted Bust",
+  "service": "Resin",
+  "category": "Display Model",
+  "summary": "A detailed overview of this resin display project will be added here.",
+  "coverImage": "/images/showcase-painted-bust.jpg",
+  "imageAlt": "Painted resin character bust displayed in a hobby workspace",
+  "challenge": "Project context, design requirements, and the primary production challenge will be added here.",
+  "approach": "Details about model preparation, print settings, finishing, and quality checks will be added here.",
+  "result": "Final outcomes, customer feedback, and key project takeaways will be added here.",
+  "specifications": [
+    { "label": "Process", "value": "Resin" },
+    { "label": "Material", "value": "To be confirmed" },
+    { "label": "Finish", "value": "Hand-painted" },
+    { "label": "Application", "value": "Display" },
+    { "label": "Dimensions", "value": "To be confirmed" },
+    { "label": "Turnaround", "value": "To be confirmed" }
+  ],
+  "gallery": [
+    { "src": "/images/showcase-painted-bust.jpg", "alt": "Painted bust project detail view" },
+    { "src": "/images/showcase-painted-bust.jpg", "alt": "Painted bust finishing detail" }
+  ]
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
 
@@ -36,30 +37,35 @@ const showcaseExamples: Array<{
   title: string;
   src: string;
   alt: string;
+  slug: string;
 }> = [
   {
     label: "Resin",
     title: "Painted Bust",
     src: "/images/showcase-painted-bust.jpg",
-    alt: "Painted resin character bust displayed in a hobby workspace"
+    alt: "Painted resin character bust displayed in a hobby workspace",
+    slug: "painted-bust"
   },
   {
     label: "Resin",
     title: "Custom Figures",
     src: "/images/showcase-miniatures.jpg",
-    alt: "Four custom white resin figures on a black background"
+    alt: "Four custom white resin figures on a black background",
+    slug: "custom-figures"
   },
   {
     label: "FDM",
     title: "Wiper Part",
     src: "/images/showcase-wiper-custom.jpg",
-    alt: "FDM printed discontinued car windshield wiper replacement part"
+    alt: "FDM printed discontinued car windshield wiper replacement part",
+    slug: "wiper-part"
   },
   {
     label: "FDM",
     title: "Tennis Grip",
     src: "/images/showcase-tennis-grip.jpg",
-    alt: "FDM printed tennis racket grip replacement"
+    alt: "FDM printed tennis racket grip replacement",
+    slug: "tennis-grip"
   }
 ];
 
@@ -462,7 +468,14 @@ export default function Home() {
               <h2 className="mt-1 text-xl font-extrabold leading-tight sm:text-2xl">
                 {currentShowcase.title}
               </h2>
-              <div className="mt-3 flex items-center gap-2">
+              <Link
+                href={`/projects/${currentShowcase.slug}/`}
+                className="focus-ring mt-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-white/90 transition hover:text-white"
+              >
+                View Project
+                <Icon name="chevronRight" className="size-3.5" />
+              </Link>
+              <div className="mt-4 flex items-center gap-2">
                 {showcaseExamples.map((example, index) => (
                   <button
                     key={example.src}

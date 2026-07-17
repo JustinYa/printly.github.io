@@ -1,0 +1,24 @@
+{
+  "slug": "custom-figures",
+  "title": "Custom Figures",
+  "service": "Resin",
+  "category": "Custom Miniatures",
+  "summary": "A detailed overview of this custom figure project will be added here.",
+  "coverImage": "/images/showcase-miniatures.jpg",
+  "imageAlt": "Four custom white resin figures on a black background",
+  "challenge": "Project context, character requirements, and the primary production challenge will be added here.",
+  "approach": "Details about model preparation, fine-detail printing, cleanup, and quality checks will be added here.",
+  "result": "Final outcomes, customer feedback, and key project takeaways will be added here.",
+  "specifications": [
+    { "label": "Process", "value": "Resin" },
+    { "label": "Material", "value": "To be confirmed" },
+    { "label": "Finish", "value": "As printed" },
+    { "label": "Application", "value": "Miniatures" },
+    { "label": "Dimensions", "value": "To be confirmed" },
+    { "label": "Turnaround", "value": "To be confirmed" }
+  ],
+  "gallery": [
+    { "src": "/images/showcase-miniatures.jpg", "alt": "Custom resin figures project view" },
+    { "src": "/images/showcase-miniatures.jpg", "alt": "Custom resin figures detail view" }
+  ]
+}
