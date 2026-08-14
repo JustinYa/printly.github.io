@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { Project } from "@/lib/projects";
+import Link from "next/link";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 
-const quoteFormUrl =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdqbuDsPwCyFewc5asZn3jofF2rcWo1aD5FYC54Amrs8gEOTw/viewform?usp=publish-editor";
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 function assetPath(path: string) {
@@ -11,6 +11,7 @@ function assetPath(path: string) {
 }
 
 export function ProjectDetail({ project }: { project: Project }) {
+  const usesLandscapeMedia = project.mediaLayout === "landscape";
   const projectSections = [
     { number: "01", title: "Challenge", content: project.challenge },
     { number: "02", title: "Approach", content: project.approach },
@@ -19,32 +20,23 @@ export function ProjectDetail({ project }: { project: Project }) {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
-      <header className="container-page flex items-center justify-between border-b border-[#ECEFF5] py-6 sm:py-8">
-        <Link href="/" aria-label="Printly home" className="focus-ring">
-          <Image
-            src={assetPath("/images/printly-logo-transparent.png")}
-            alt="Printly"
-            width={1242}
-            height={388}
-            priority
-            sizes="180px"
-            className="h-auto w-40 object-contain sm:w-44"
-          />
-        </Link>
-        <Link
-          href="/"
-          className="focus-ring text-xs font-extrabold uppercase tracking-[0.12em] text-[#555555] transition hover:text-[#2F6BFF]"
-        >
-          Back to Home
-        </Link>
-      </header>
+      <SiteHeader activePage="projects" />
 
       <section className="container-page grid gap-10 py-12 sm:py-16 lg:grid-cols-[0.4fr_0.6fr] lg:items-center lg:gap-16 lg:py-20">
         <div className="max-w-xl">
+          <Link
+            href="/projects/"
+            className="focus-ring mb-5 inline-flex items-center gap-2 rounded-full border border-[#DDE5F1] bg-white px-4 py-2 text-sm font-bold text-[#555555] shadow-[0_4px_14px_rgba(24,24,27,0.05)] transition hover:border-[#2F6BFF] hover:text-[#2F6BFF]"
+          >
+            <span aria-hidden="true" className="text-base leading-none">
+              &larr;
+            </span>
+            Back to Projects
+          </Link>
           <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
             Selected Work / {project.service}
           </p>
-          <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl">
+          <h1 className="mt-5 text-3xl font-extrabold leading-tight sm:text-4xl">
             {project.title}
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-8 text-[#555555]">
@@ -55,14 +47,18 @@ export function ProjectDetail({ project }: { project: Project }) {
           </p>
         </div>
 
-        <div className="relative mx-auto aspect-[3/4] w-full max-w-[34rem] overflow-hidden rounded-lg bg-[#F8FAFD] lg:mr-0">
+        <div
+          className={`relative mx-auto w-full overflow-hidden rounded-lg bg-[#F8FAFD] lg:mr-0 ${
+            usesLandscapeMedia ? "aspect-[4/3] max-w-[40rem]" : "aspect-[3/4] max-w-[34rem]"
+          }`}
+        >
           <Image
             src={assetPath(project.coverImage)}
             alt={project.imageAlt}
             fill
             priority
             sizes="(min-width: 1024px) 34rem, 92vw"
-            className="object-cover"
+            className={project.coverFit === "contain" ? "object-contain" : "object-cover"}
           />
         </div>
       </section>
@@ -114,14 +110,16 @@ export function ProjectDetail({ project }: { project: Project }) {
             {project.gallery.map((image, index) => (
               <div
                 key={`${image.src}-${index}`}
-                className="relative aspect-[3/4] overflow-hidden rounded-lg bg-white"
+                className={`relative overflow-hidden rounded-lg bg-white ${
+                  usesLandscapeMedia ? "aspect-[4/3]" : "aspect-[3/4]"
+                }`}
               >
                 <Image
                   src={assetPath(image.src)}
                   alt={image.alt}
                   fill
                   sizes="(min-width: 640px) 46vw, 92vw"
-                  className="object-cover"
+                  className={image.fit === "contain" ? "object-contain" : "object-cover"}
                 />
               </div>
             ))}
@@ -139,23 +137,16 @@ export function ProjectDetail({ project }: { project: Project }) {
               Let&apos;s turn your next idea into a finished part.
             </h2>
           </div>
-          <a
-            href={quoteFormUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/quote/"
             className="focus-ring inline-flex min-h-[52px] items-center justify-center rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
           >
             Start a Similar Project
-          </a>
+          </Link>
         </div>
       </section>
 
-      <footer className="border-t border-[#ECEFF5] py-8">
-        <div className="container-page flex flex-col gap-2 text-xs font-semibold text-[#7A7A7A] sm:flex-row sm:items-center sm:justify-between">
-          <p>Copyright 2026 Printly. All rights reserved.</p>
-          <p>Resin and FDM 3D Printing</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

@@ -1,0 +1,25 @@
+{
+  "slug": "smart-fish-tank",
+  "title": "Smart Fish Tank",
+  "service": "FDM",
+  "category": "Fast Prototyping",
+  "summary": "A custom smart fish tank enclosure developed from customer reference images and translated into a printable multi-part prototype.",
+  "coverImage": "/images/project-smart-fish-tank.webp",
+  "imageAlt": "Full-scale gray smart fish tank enclosure prototype on a wooden surface",
+  "challenge": "The customer concept needed to become a manufacturable enclosure that could organize the tank, display, lighting, and internal components while remaining practical to assemble.",
+  "approach": "A multi-part 3D model was developed from the supplied references, separating the housing, lid, base, and internal supports for FDM production and assembly.",
+  "result": "The completed full-scale prototype brought the concept into physical form and provided a functional platform for evaluating component fit and the overall design.",
+  "mediaLayout": "landscape",
+  "specifications": [
+    { "label": "Process", "value": "FDM" },
+    { "label": "Material", "value": "To be confirmed" },
+    { "label": "Finish", "value": "As printed" },
+    { "label": "Application", "value": "Smart aquarium" },
+    { "label": "Dimensions", "value": "To be confirmed" },
+    { "label": "Turnaround", "value": "To be confirmed" }
+  ],
+  "gallery": [
+    { "src": "/images/project-smart-fish-tank.webp", "alt": "Full-scale smart fish tank enclosure prototype" },
+    { "src": "/images/project-smart-fish-tank-cad.webp", "alt": "CAD assembly model of the smart fish tank and internal components", "fit": "contain" }
+  ]
+}

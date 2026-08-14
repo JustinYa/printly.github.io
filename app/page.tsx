@@ -2,158 +2,98 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { MouseEvent } from "react";
 import { useEffect, useState } from "react";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
 
-const contactEmail = "contact.printlylab@gmail.com";
-const quoteFormUrl =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdqbuDsPwCyFewc5asZn3jofF2rcWo1aD5FYC54Amrs8gEOTw/viewform?usp=publish-editor";
-const supportFormUrl =
-  "https://docs.google.com/forms/d/e/1FAIpQLSdy8woehAlDrSA1wL-Ksqe0MGnCQ2zHcIV5OfGymYANGYE_tA/viewform?usp=publish-editor";
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
-type PrintServiceId = "fdm" | "resin";
-type ShowcaseDirection = "next" | "previous";
-
-type IconName =
-  | "shield"
-  | "lock"
-  | "bolt"
-  | "cube"
-  | "layers"
-  | "spark"
-  | "package"
-  | "upload"
-  | "mail"
-  | "check"
-  | "chevronLeft"
-  | "chevronRight";
-
 const showcaseAutoplayDelay = 5500;
 const showcaseTransitionDuration = 650;
 
-const showcaseExamples: Array<{
+type ShowcaseDirection = "next" | "previous";
+type HomeIconName =
+  | "image"
+  | "file"
+  | "scan"
+  | "chevronLeft"
+  | "chevronRight";
+
+const equipmentList: Array<{
   label: string;
   title: string;
+  description: string;
+  buildVolume?: string;
   src: string;
   alt: string;
-  slug: string;
 }> = [
   {
-    label: "Resin",
-    title: "Painted Bust",
-    src: "/images/showcase-painted-bust.jpg",
-    alt: "Painted resin character bust displayed in a hobby workspace",
-    slug: "painted-bust"
+    label: "FDM Printer",
+    title: "Bambu Lab X2D",
+    description: "Compact dual-nozzle FDM",
+    buildVolume: "Build volume · 256 × 256 × 260 mm",
+    src: "/images/equipment-bambu-x2d.png",
+    alt: "Bambu Lab X2D FDM 3D printer"
   },
   {
-    label: "Resin",
-    title: "Custom Figures",
-    src: "/images/showcase-miniatures.jpg",
-    alt: "Four custom white resin figures on a black background",
-    slug: "custom-figures"
+    label: "FDM Printer",
+    title: "Bambu Lab H2C",
+    description: "Large-format multi-hotend FDM",
+    buildVolume: "Build volume · 330 × 320 × 325 mm",
+    src: "/images/equipment-bambu-h2c.png",
+    alt: "Bambu Lab H2C FDM 3D printer"
   },
   {
-    label: "FDM",
-    title: "Wiper Part",
-    src: "/images/showcase-wiper-custom.jpg",
-    alt: "FDM printed discontinued car windshield wiper replacement part",
-    slug: "wiper-part"
+    label: "FDM Printer",
+    title: "Bambu Lab H2D",
+    description: "Large-format dual-nozzle FDM",
+    buildVolume: "Build volume · 350 × 320 × 325 mm",
+    src: "/images/equipment-bambu-h2d.png",
+    alt: "Bambu Lab H2D FDM 3D printer"
   },
   {
-    label: "FDM",
-    title: "Tennis Grip",
-    src: "/images/showcase-tennis-grip.jpg",
-    alt: "FDM printed tennis racket grip replacement",
-    slug: "tennis-grip"
+    label: "FDM Printer",
+    title: "Bambu Lab H2S",
+    description: "Extra-large single-nozzle FDM",
+    buildVolume: "Build volume · 340 × 320 × 340 mm",
+    src: "/images/equipment-bambu-h2s.png",
+    alt: "Bambu Lab H2S FDM 3D printer"
+  },
+  {
+    label: "FDM Post-processing",
+    title: "ArtinBox",
+    description: "Controlled annealing for FDM parts",
+    src: "/images/equipment-artinbox.png",
+    alt: "ArtinBox annealing oven for FDM printed parts"
+  },
+  {
+    label: "Resin Printer · Coming Soon",
+    title: "ELEGOO Saturn 4 Ultra 16K",
+    description: "High-detail resin printing",
+    buildVolume: "Build volume · 211.68 × 118.37 × 220 mm",
+    src: "/images/equipment-elegoo-saturn-4-ultra-16k.png",
+    alt: "ELEGOO Saturn 4 Ultra 16K resin 3D printer"
   }
 ];
 
-const printServiceOptions: Array<{
-  id: PrintServiceId;
-  label: string;
-  description: string;
-  materials: string[];
-  colors: Array<{
-    name: string;
-    value: string;
-  }>;
-}> = [
-  {
-    id: "fdm",
-    label: "FDM",
-    description: "Durable functional prints for prototypes, fixtures, and everyday parts.",
-    materials: ["PLA", "PETG", "ABS", "ASA", "TPU"],
-    colors: [
-      { name: "Black", value: "#18181B" },
-      { name: "White", value: "#FFFFFF" },
-      { name: "Green", value: "#22C55E" },
-      { name: "Red", value: "#EF4444" },
-      { name: "Blue", value: "#2F6BFF" },
-      { name: "Purple", value: "#8B5CF6" },
-      { name: "Gold", value: "#D4A017" },
-      { name: "Copper", value: "#B87333" }
-    ]
-  },
-  {
-    id: "resin",
-    label: "Resin",
-    description: "High-detail prints for miniatures, prototypes, and display models.",
-    materials: ["Standard", "Tough", "Flexible", "High-detail"],
-    colors: [
-      { name: "Black", value: "#18181B" },
-      { name: "White", value: "#FFFFFF" },
-      { name: "Gray", value: "#8A8F98" }
-    ]
-  }
-];
-
-const featureHighlights: Array<{
+const coreServices: Array<{
   title: string;
   description: string;
-  icon: IconName;
+  icon: HomeIconName;
 }> = [
   {
-    title: "High Quality",
-    description: "Precision FDM and resin prints",
-    icon: "shield"
+    title: "Design from Images",
+    description: "Share reference photos, sketches, or measurements and we will create a printable 3D model.",
+    icon: "image"
   },
   {
-    title: "Secure",
-    description: "Your files are safe",
-    icon: "lock"
+    title: "Print from Files",
+    description: "Send your ready-to-print STL, 3MF, OBJ, or STEP file and we will prepare it for production.",
+    icon: "file"
   },
   {
-    title: "Fast Turnaround",
-    description: "Reliable service",
-    icon: "bolt"
-  }
-];
-
-const steps: Array<{
-  title: string;
-  description: string;
-  icon: IconName;
-}> = [
-  {
-    title: "Upload",
-    description: "Send STL, 3MF, OBJ, STEP, or ZIP files.",
-    icon: "upload"
-  },
-  {
-    title: "Quote",
-    description: "We review your files and send a clear quote.",
-    icon: "mail"
-  },
-  {
-    title: "Print",
-    description: "Once approved, we produce your FDM or resin order.",
-    icon: "check"
-  },
-  {
-    title: "Deliver",
-    description: "Pick up locally or choose shipping when ready.",
-    icon: "package"
+    title: "1:1 Replication",
+    description: "Recreate hard-to-find parts at true size from an original sample or precise measurements.",
+    icon: "scan"
   }
 ];
 
@@ -161,20 +101,7 @@ function assetPath(path: string) {
   return `${siteBasePath}${path}`;
 }
 
-async function copyTextToClipboard(text: string) {
-  if (!navigator.clipboard?.writeText) {
-    return false;
-  }
-
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-function Icon({ name, className = "size-7" }: { name: IconName; className?: string }) {
+function HomeIcon({ name, className = "size-7" }: { name: HomeIconName; className?: string }) {
   const common = {
     className,
     viewBox: "0 0 24 24",
@@ -187,83 +114,26 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
   };
 
   switch (name) {
-    case "shield":
+    case "image":
       return (
         <svg {...common}>
-          <path d="M12 3 5 6v5c0 5 3.4 8.4 7 10 3.6-1.6 7-5 7-10V6l-7-3Z" />
-          <path d="m9 12 2 2 4-5" />
+          <rect width="18" height="16" x="3" y="4" rx="2" />
+          <circle cx="9" cy="10" r="2" />
+          <path d="m21 15-5-5L5 20" />
         </svg>
       );
-    case "lock":
+    case "file":
       return (
         <svg {...common}>
-          <rect width="14" height="10" x="5" y="11" rx="2" />
-          <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+          <path d="M14 2v6h6M8 13h8M8 17h6" />
         </svg>
       );
-    case "bolt":
+    case "scan":
       return (
         <svg {...common}>
-          <path d="m13 2-8 12h6l-1 8 8-12h-6l1-8Z" />
-        </svg>
-      );
-    case "cube":
-      return (
-        <svg {...common}>
-          <path d="m12 2 8 4.5v9L12 20l-8-4.5v-9L12 2Z" />
-          <path d="M12 11 4.4 6.7" />
-          <path d="m12 11 7.6-4.3" />
-          <path d="M12 11v9" />
-        </svg>
-      );
-    case "layers":
-      return (
-        <svg {...common}>
-          <path d="m12 3 8 4-8 4-8-4 8-4Z" />
-          <path d="m4 12 8 4 8-4" />
-          <path d="m4 17 8 4 8-4" />
-        </svg>
-      );
-    case "spark":
-      return (
-        <svg {...common}>
-          <path d="M12 3v4" />
-          <path d="M12 17v4" />
-          <path d="M3 12h4" />
-          <path d="M17 12h4" />
-          <path d="m6 6 2.4 2.4" />
-          <path d="m15.6 15.6 2.4 2.4" />
-          <path d="m18 6-2.4 2.4" />
-          <path d="m8.4 15.6-2.4 2.4" />
-        </svg>
-      );
-    case "package":
-      return (
-        <svg {...common}>
-          <path d="m12 2 8 4.5v9L12 20l-8-4.5v-9L12 2Z" />
-          <path d="M4.4 6.7 12 11l7.6-4.3" />
-          <path d="M12 11v9" />
-        </svg>
-      );
-    case "upload":
-      return (
-        <svg {...common}>
-          <path d="M12 16V4" />
-          <path d="m7 9 5-5 5 5" />
-          <path d="M5 20h14" />
-        </svg>
-      );
-    case "mail":
-      return (
-        <svg {...common}>
-          <rect width="18" height="14" x="3" y="5" rx="2" />
-          <path d="m3 7 9 6 9-6" />
-        </svg>
-      );
-    case "check":
-      return (
-        <svg {...common}>
-          <path d="M20 6 9 17l-5-5" />
+          <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2" />
+          <path d="m12 7 4 2.3v4.4L12 16l-4-2.3V9.3L12 7ZM12 11.5 8.2 9.4M12 11.5l3.8-2.1M12 11.5V16" />
         </svg>
       );
     case "chevronLeft":
@@ -278,24 +148,16 @@ function Icon({ name, className = "size-7" }: { name: IconName; className?: stri
           <path d="m9 18 6-6-6-6" />
         </svg>
       );
-    default:
-      return null;
   }
 }
 
 export default function Home() {
-  const [emailNotice, setEmailNotice] = useState("");
   const [currentExample, setCurrentExample] = useState(0);
   const [previousExample, setPreviousExample] = useState<number | null>(null);
   const [showcaseDirection, setShowcaseDirection] =
     useState<ShowcaseDirection>("next");
   const [isShowcaseHovered, setIsShowcaseHovered] = useState(false);
-  const [selectedPrintService, setSelectedPrintService] =
-    useState<PrintServiceId>("fdm");
-  const selectedService = printServiceOptions.find(
-    (service) => service.id === selectedPrintService
-  ) ?? printServiceOptions[0];
-  const currentShowcase = showcaseExamples[currentExample];
+  const currentEquipment = equipmentList[currentExample];
 
   useEffect(() => {
     if (isShowcaseHovered) {
@@ -305,7 +167,7 @@ export default function Home() {
     const timeoutId = window.setTimeout(() => {
       setPreviousExample(currentExample);
       setShowcaseDirection("next");
-      setCurrentExample((currentExample + 1) % showcaseExamples.length);
+      setCurrentExample((currentExample + 1) % equipmentList.length);
     }, showcaseAutoplayDelay);
 
     return () => window.clearTimeout(timeoutId);
@@ -336,83 +198,87 @@ export default function Home() {
 
   function showPreviousExample() {
     showExample(
-      currentExample === 0 ? showcaseExamples.length - 1 : currentExample - 1,
+      currentExample === 0 ? equipmentList.length - 1 : currentExample - 1,
       "previous"
     );
   }
 
   function showNextExample() {
     showExample(
-      currentExample === showcaseExamples.length - 1 ? 0 : currentExample + 1,
+      currentExample === equipmentList.length - 1 ? 0 : currentExample + 1,
       "next"
     );
   }
 
-  function handleEmailClick(event: MouseEvent<HTMLAnchorElement>) {
-    event.currentTarget.blur();
-    setEmailNotice("Opening your mail app. Email copied if your browser allows it.");
-
-    void copyTextToClipboard(contactEmail).then((copied) => {
-      setEmailNotice(
-        copied
-          ? "Email copied. If nothing opened, paste it into your email app."
-          : "If nothing opened, copy this address into your email app."
-      );
-    });
-  }
-
   return (
     <main id="top" className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
-      <header className="container-page flex justify-center pb-4 pt-8 sm:justify-start sm:pb-5 sm:pt-10 lg:pb-6 lg:pt-12">
-        <Image
-          src={assetPath("/images/printly-logo-transparent.png")}
-          alt="Printly"
-          width={1242}
-          height={388}
-          priority
-          sizes="(min-width: 1024px) 288px, (min-width: 640px) 256px, 208px"
-          className="h-auto w-52 object-contain sm:w-64 lg:w-72"
-        />
-      </header>
+      <SiteHeader activePage="home" />
 
-      <section className="container-page grid gap-10 pb-16 pt-1 sm:gap-12 sm:pb-20 lg:grid-cols-[0.45fr_0.55fr] lg:items-center lg:pb-24 lg:pt-0">
+      <section className="container-page grid gap-10 py-16 sm:gap-12 sm:py-20 lg:grid-cols-[0.45fr_0.55fr] lg:items-center lg:py-24">
         <div className="mx-auto max-w-xl text-center sm:text-left lg:mx-0">
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
             Resin and FDM 3D Printing
           </p>
-          <h1 className="mx-auto mt-4 max-w-[28rem] text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:mx-0 sm:text-4xl">
-            Bring Your{" "}
-            <span className="text-[#2F6BFF]">Ideas</span>
+          <h1 className="mx-auto mt-4 max-w-[28rem] text-3xl font-extrabold leading-tight sm:mx-0 sm:text-4xl">
+            Bring Your <span className="text-[#2F6BFF]">Ideas</span>
             <br />
             To <span className="text-[#2F6BFF]">Life</span>
           </h1>
           <p className="mx-auto mt-5 max-w-lg text-base leading-[1.65] text-[#555555] sm:mx-0 sm:mt-6 sm:text-lg">
-            Professional design, prototyping, and custom 3D printing &mdash; all
-            in one place.
+            Professional design, prototyping, and custom 3D printing — all in
+            one place.
           </p>
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <a
-              href={quoteFormUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring inline-flex min-h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6] sm:w-auto"
-            >
-              <Icon name="upload" className="size-5" />
-              Upload Your Model
-            </a>
+          <div className="mt-8 grid auto-rows-fr gap-4 text-left sm:grid-cols-3">
+            {[
+              {
+                lead: "Flexible",
+                phrase: "for every iteration",
+              },
+              {
+                lead: "Fast",
+                phrase: "from model to finished part",
+              },
+              {
+                lead: "Cost-effective",
+                phrase: "for prototypes and small runs",
+              },
+            ].map((benefit) => (
+              <div
+                key={benefit.lead}
+                className="flex h-full flex-col items-start justify-center rounded-xl border border-[#E4E9F1] bg-white p-5 shadow-soft"
+              >
+                <h2 className="text-xl font-extrabold leading-tight text-[#18181B]">
+                  {benefit.lead}
+                </h2>
+                <p className="mt-2 text-sm font-medium leading-5 text-[#666666]">
+                  {benefit.phrase}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
         <div className="mx-auto w-full max-w-[28rem] lg:ml-auto">
+          <div className="mb-4 flex items-end justify-between gap-4 text-left">
+            <div>
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
+                Our Capabilities
+              </p>
+              <h2 className="mt-1 text-2xl font-extrabold">Equipment List</h2>
+            </div>
+            <p className="pb-1 text-xs font-bold uppercase tracking-[0.12em] text-[#777777]">
+              6 Systems
+            </p>
+          </div>
           <div
             role="region"
             aria-roledescription="carousel"
-            aria-label="Print examples"
+            aria-label="Our equipment"
             onMouseEnter={() => setIsShowcaseHovered(true)}
             onMouseLeave={() => setIsShowcaseHovered(false)}
-            className="relative aspect-[3/4] overflow-hidden rounded-lg border border-[#ECEFF5] bg-[#F8FAFD] shadow-soft"
+            className="relative aspect-square overflow-hidden rounded-lg border border-[#E4E9F1] bg-white shadow-soft"
           >
-            {showcaseExamples.map((example, index) => {
+            {equipmentList.map((equipment, index) => {
               const isCurrent = index === currentExample;
               const isPrevious = index === previousExample;
               let animationClass = "z-0 opacity-0";
@@ -432,97 +298,97 @@ export default function Home() {
               }
 
               return (
-                <Image
-                  key={example.src}
-                  src={assetPath(example.src)}
-                  alt={isCurrent ? example.alt : ""}
+                <div
+                  key={equipment.src}
                   aria-hidden={isCurrent ? undefined : true}
-                  fill
-                  priority={index === 0}
-                  sizes="(min-width: 1024px) 28rem, 92vw"
-                  className={`object-cover ${animationClass}`}
-                />
+                  className={`absolute inset-0 overflow-hidden ${animationClass}`}
+                >
+                  <Image
+                    src={assetPath(equipment.src)}
+                    alt={isCurrent ? equipment.alt : ""}
+                    fill
+                    priority={index === 0}
+                    sizes="(min-width: 1024px) 28rem, 92vw"
+                    className="object-contain"
+                  />
+                </div>
               );
             })}
-            <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-black/75 via-black/0 to-transparent" />
             <button
               type="button"
-              aria-label="Previous example"
+              aria-label="Previous equipment"
               onClick={showPreviousExample}
-              className="focus-ring absolute left-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:-translate-x-0.5 hover:bg-black/35 hover:text-white"
+              className="focus-ring absolute left-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 transition hover:bg-black/35 hover:text-white"
             >
-              <Icon name="chevronLeft" className="size-4" />
+              <HomeIcon name="chevronLeft" className="size-4" />
             </button>
             <button
               type="button"
-              aria-label="Next example"
+              aria-label="Next equipment"
               onClick={showNextExample}
-              className="focus-ring absolute right-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 backdrop-blur-[2px] transition hover:translate-x-0.5 hover:bg-black/35 hover:text-white"
+              className="focus-ring absolute right-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 transition hover:bg-black/35 hover:text-white"
             >
-              <Icon name="chevronRight" className="size-4" />
+              <HomeIcon name="chevronRight" className="size-4" />
             </button>
             <div className="absolute inset-x-0 bottom-0 z-30 p-4 text-white sm:p-5">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/70">
-                {currentShowcase.label}
+                {currentEquipment.label}
               </p>
-              <h2 className="mt-1 text-xl font-extrabold leading-tight sm:text-2xl">
-                {currentShowcase.title}
-              </h2>
-              <Link
-                href={`/projects/${currentShowcase.slug}/`}
-                className="focus-ring mt-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-white/90 transition hover:text-white"
-              >
-                View Project
-                <Icon name="chevronRight" className="size-3.5" />
-              </Link>
-              <div className="mt-4 flex items-center gap-2">
-                {showcaseExamples.map((example, index) => (
+              <h3 className="mt-1 text-xl font-extrabold leading-tight sm:text-2xl">
+                {currentEquipment.title}
+              </h3>
+              <p className="mt-2 text-xs font-semibold text-white/80">
+                {currentEquipment.description}
+              </p>
+              {currentEquipment.buildVolume ? (
+                <p className="mt-1 text-[11px] font-extrabold text-white">
+                  {currentEquipment.buildVolume}
+                </p>
+              ) : null}
+              <div className="mt-3 flex items-center gap-2">
+                {equipmentList.map((equipment, index) => (
                   <button
-                    key={example.src}
+                    key={equipment.src}
                     type="button"
-                    aria-label={`Show ${example.title}`}
+                    aria-label={`Show ${equipment.title}`}
                     aria-current={index === currentExample ? "true" : undefined}
-                    onClick={() =>
-                      showExample(
-                        index,
-                        index > currentExample ? "next" : "previous"
-                      )
-                    }
+                    onClick={() => showExample(index, index > currentExample ? "next" : "previous")}
                     className={`focus-ring h-2.5 rounded-full transition-all ${
-                      index === currentExample
-                        ? "w-8 bg-white"
-                        : "w-2.5 bg-white/70 hover:bg-white"
+                      index === currentExample ? "w-8 bg-white" : "w-2.5 bg-white/70 hover:bg-white"
                     }`}
                   />
                 ))}
               </div>
             </div>
-            <p className="sr-only" aria-live="off">
-              Showing {currentShowcase.title}
-            </p>
+            <p className="sr-only" aria-live="off">Showing {currentEquipment.title}</p>
           </div>
         </div>
       </section>
 
       <section className="container-page pb-20 sm:pb-24">
-        <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-3 lg:mx-0 lg:max-w-4xl">
-          {featureHighlights.map((feature) => (
-            <div
-              key={feature.title}
-              className="flex items-center gap-4 sm:border-r sm:border-[#ECEFF5] sm:pr-6 last:sm:border-r-0 lg:pr-8"
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
+            Core Services
+          </p>
+          <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
+            Three Ways We Can Help
+          </h2>
+        </div>
+        <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:mt-12 md:grid-cols-3">
+          {coreServices.map((service) => (
+            <article
+              key={service.title}
+              className="rounded-lg border border-[#ECEFF5] bg-white p-7 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF]"
             >
-              <div className="grid size-12 shrink-0 place-items-center text-[#2F6BFF]">
-                <Icon name={feature.icon} className="size-8" />
+              <div className="grid size-12 place-items-center rounded-lg bg-[#EAF2FF] text-[#2F6BFF]">
+                <HomeIcon name={service.icon} className="size-7" />
               </div>
-              <div>
-                <h2 className="text-base font-extrabold text-[#18181B]">
-                  {feature.title}
-                </h2>
-                <p className="mt-1 text-sm font-medium text-[#555555]">
-                  {feature.description}
-                </p>
-              </div>
-            </div>
+              <h3 className="mt-5 text-xl font-extrabold">{service.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-[#555555]">
+                {service.description}
+              </p>
+            </article>
           ))}
         </div>
       </section>
@@ -530,259 +396,30 @@ export default function Home() {
       <section className="bg-[#F8FAFD] py-20 sm:py-24 lg:py-28">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
-              Services
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-[#18181B] sm:text-4xl">
-              What We Offer
-            </h2>
+            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">Explore Printly</p>
+            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Everything Has Its Place</h2>
           </div>
-          <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
-            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
-              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
-                <Icon name="cube" className="size-10" />
-              </div>
-              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
-                Printing services
-              </h3>
-              <p className="mt-3 min-h-[72px] text-sm leading-6 text-[#555555]">
-                {selectedService.description}
-              </p>
-              <div
-                className="mt-5 grid grid-cols-2 gap-1 rounded-lg bg-[#F8FAFD] p-1"
-                role="group"
-                aria-label="Printing service type"
+          <div className="mx-auto mt-10 grid max-w-5xl gap-6 sm:mt-12 md:grid-cols-3">
+            {[
+              { title: "Projects", text: "Browse selected design and production work.", href: "/projects/" },
+              { title: "Quote", text: "Review services and upload a model.", href: "/quote/" },
+              { title: "Contact Us", text: "Ask a question or get support.", href: "/contact/" }
+            ].map((item) => (
+              <Link
+                key={item.title}
+                href={item.href}
+                className="focus-ring group rounded-lg border border-[#ECEFF5] bg-white p-7 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF]"
               >
-                {printServiceOptions.map((service) => (
-                  <button
-                    key={service.id}
-                    type="button"
-                    aria-pressed={service.id === selectedPrintService}
-                    onClick={() => setSelectedPrintService(service.id)}
-                    className={`focus-ring min-h-10 rounded-md px-3 text-sm font-extrabold transition ${
-                      service.id === selectedPrintService
-                        ? "bg-[#2F6BFF] text-white shadow-[0_8px_18px_rgba(47,107,255,0.22)]"
-                        : "text-[#555555] hover:bg-white hover:text-[#2F6BFF]"
-                    }`}
-                  >
-                    {service.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
-              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
-                <Icon name="layers" className="size-10" />
-              </div>
-              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
-                Material Options
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-[#555555]">
-                Available choices for {selectedService.label}.
-              </p>
-              <div className="mt-5 flex min-h-[92px] flex-wrap items-center justify-center gap-2">
-                {selectedService.materials.map((material) => (
-                  <span
-                    key={material}
-                    className="rounded-full border border-[#ECEFF5] bg-[#F8FAFD] px-3 py-2 text-xs font-extrabold text-[#18181B]"
-                  >
-                    {material}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
-              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
-                <Icon name="spark" className="size-10" />
-              </div>
-              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
-                Color Choices
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-[#555555]">
-                Available choices for {selectedService.label}.
-              </p>
-              <div className="mt-5 flex min-h-[92px] flex-wrap items-center justify-center gap-2">
-                {selectedService.colors.map((color) => (
-                  <span
-                    key={color.name}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#ECEFF5] bg-[#F8FAFD] px-3 py-2 text-xs font-extrabold text-[#18181B]"
-                  >
-                    <span
-                      className="size-4 rounded-full border border-[#D9DEE8]"
-                      style={{ backgroundColor: color.value }}
-                      aria-hidden="true"
-                    />
-                    {color.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] hover:shadow-[0_10px_30px_rgba(47,107,255,0.10)]">
-              <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
-                <Icon name="package" className="size-10" />
-              </div>
-              <h3 className="mt-6 text-base font-extrabold text-[#18181B]">
-                Pickup & Shipping
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-[#555555]">
-                Local pickup or shipping after your quote is approved.
-              </p>
-            </div>
+                <h3 className="text-xl font-extrabold transition group-hover:text-[#2F6BFF]">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[#555555]">{item.text}</p>
+                <span className="mt-6 inline-flex text-sm font-extrabold text-[#2F6BFF]">Open -&gt;</span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <section id="how" className="container-page py-20 sm:py-24 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF] sm:text-[13px]">
-            How It Works
-          </p>
-          <h2 className="mt-3 text-3xl font-extrabold leading-tight text-[#18181B] sm:text-4xl">
-            Four Simple Steps
-          </h2>
-        </div>
-        <div className="mx-auto mt-10 grid max-w-6xl gap-8 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, index) => (
-            <div key={step.title} className="relative text-center">
-              {index < steps.length - 1 ? (
-                <div className="absolute left-[calc(50%+3rem)] top-10 hidden h-px w-[calc(100%-6rem)] border-t border-dashed border-[#ECEFF5] lg:block" />
-              ) : null}
-              <div className="relative z-10 mx-auto grid size-20 place-items-center rounded-full bg-[#EAF2FF] text-[#2F6BFF]">
-                <span className="absolute -top-2 right-1 grid size-6 place-items-center rounded-full bg-[#2F6BFF] text-xs font-extrabold text-white">
-                  {index + 1}
-                </span>
-                <Icon name={step.icon} className="size-8" />
-              </div>
-              <h3 className="mt-4 text-base font-extrabold text-[#18181B]">
-                {step.title}
-              </h3>
-              <p className="mx-auto mt-2 max-w-44 text-sm leading-6 text-[#555555]">
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="quote" className="container-page pb-8 pt-0 sm:pb-12">
-        <div className="overflow-hidden rounded-lg border border-[#ECEFF5] bg-white shadow-soft">
-          <div className="grid lg:grid-cols-[0.31fr_0.69fr]">
-            <aside className="bg-[#F8FAFD] p-6 sm:p-10">
-              <h2 className="text-3xl font-extrabold leading-tight text-[#18181B] sm:text-4xl">
-                Get
-                <br />
-                Support
-              </h2>
-              <div className="mt-7 h-1 w-10 rounded-full bg-[#2F6BFF]" />
-              <p className="mt-4 text-sm leading-7 text-[#555555]">
-                Questions about 3D printing?
-                <br />
-                We are here to help.
-              </p>
-              <div className="mt-12 border-t border-[#ECEFF5] pt-8 text-sm sm:mt-20 lg:mt-28">
-                <p className="font-extrabold text-[#18181B]">
-                  Need urgent help?
-                </p>
-                <a
-                  className="focus-ring mt-2 inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
-                  href={`mailto:${contactEmail}`}
-                  onClick={handleEmailClick}
-                >
-                  {contactEmail}
-                </a>
-                <p className="mt-4 leading-6 text-[#7A7A7A]">
-                  We typically reply within 24 hours on business days.
-                </p>
-                {emailNotice ? (
-                  <p className="mt-3 text-xs font-semibold leading-5 text-[#555555]" aria-live="polite">
-                    {emailNotice}
-                  </p>
-                ) : null}
-              </div>
-            </aside>
-
-            <div className="grid content-center gap-6 p-6 sm:p-8 lg:p-10">
-              <div className="p-0 sm:p-2 lg:p-4">
-                <h3 className="max-w-xl text-3xl font-extrabold leading-[1.08] text-[#18181B] sm:text-5xl">
-                  Tell us how we
-                  <br />
-                  can help<span className="text-[#2F6BFF]">.</span>
-                </h3>
-                <p className="mt-6 max-w-lg text-base leading-7 text-[#555555]">
-                  Fill out the support form with as much detail as possible. You
-                  can also upload files or screenshots to help us understand your
-                  question better.
-                </p>
-                <a
-                  href={supportFormUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="focus-ring mt-7 inline-flex min-h-[56px] w-full min-w-0 items-center justify-between gap-6 rounded-lg bg-[#2F6BFF] px-6 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6] sm:w-auto sm:min-w-72 sm:px-7"
-                >
-                  <span className="inline-flex items-center gap-3">
-                    <Icon name="mail" className="size-5" />
-                    Open Support Form
-                  </span>
-                  <span aria-hidden="true">-&gt;</span>
-                </a>
-                <p className="mt-5 text-xs font-semibold text-[#7A7A7A]">
-                  Secure &nbsp;&middot;&nbsp; Powered by Google Forms
-                </p>
-              </div>
-
-              <div className="mt-4 border-t border-[#ECEFF5] pt-8">
-                <div className="grid gap-6 sm:grid-cols-3">
-                {[
-                  {
-                    title: "Upload Files",
-                    description: "STL, images, or screenshots",
-                    icon: "upload" as IconName
-                  },
-                  {
-                    title: "Quick Response",
-                    description: "We typically reply within 24 hours",
-                    icon: "bolt" as IconName
-                  },
-                  {
-                    title: "Expert Advice",
-                    description: "Get clear answers from our team",
-                    icon: "mail" as IconName
-                  }
-                ].map((item) => (
-                  <div
-                    key={item.title}
-                    className="border-[#ECEFF5] sm:border-r sm:pr-6 last:sm:border-r-0 lg:pr-8"
-                  >
-                    <div className="text-[#2F6BFF]">
-                      <Icon name={item.icon} className="size-9" />
-                    </div>
-                    <h4 className="mt-5 text-base font-extrabold text-[#18181B]">
-                      {item.title}
-                    </h4>
-                    <p className="mt-2 text-sm leading-6 text-[#555555]">
-                      {item.description}
-                    </p>
-                  </div>
-                ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <footer className="flex flex-col gap-3 py-8 text-center text-sm font-semibold text-[#7A7A7A] sm:flex-row sm:items-center sm:justify-between sm:text-left">
-          <span>Copyright {new Date().getFullYear()} Printly. All rights reserved.</span>
-          <a
-            className="focus-ring break-all rounded-lg px-3 py-2 hover:bg-[#EAF2FF] hover:text-[#2F6BFF]"
-            href={`mailto:${contactEmail}`}
-            onClick={handleEmailClick}
-          >
-            {contactEmail}
-          </a>
-        </footer>
-      </section>
+      <SiteFooter />
     </main>
   );
 }

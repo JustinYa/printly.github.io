@@ -24,6 +24,41 @@ body {
   color: var(--color-title);
 }
 
+.project-strip {
+  scrollbar-color: #b8c9ed transparent;
+  scrollbar-width: thin;
+}
+
+.project-strip::-webkit-scrollbar {
+  height: 8px;
+}
+
+.project-strip::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-strip::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #b8c9ed;
+}
+
+.project-strip::-webkit-scrollbar-button:horizontal:decrement,
+.project-strip::-webkit-scrollbar-button:horizontal:increment {
+  display: block;
+  width: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 8px 8px;
+}
+
+.project-strip::-webkit-scrollbar-button:horizontal:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath d='M5.5 1.25 2.5 4l3 2.75' fill='none' stroke='%239BB5E7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.project-strip::-webkit-scrollbar-button:horizontal:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath d='m2.5 1.25 3 2.75-3 2.75' fill='none' stroke='%239BB5E7' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
 ::selection {
   background: var(--color-primary-light);
 }
