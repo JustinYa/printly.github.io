@@ -28,14 +28,6 @@ const equipmentList: Array<{
 }> = [
   {
     label: "FDM Printer",
-    title: "Bambu Lab X2D",
-    description: "Compact dual-nozzle FDM",
-    buildVolume: "Build volume · 256 × 256 × 260 mm",
-    src: "/images/equipment-bambu-x2d.png",
-    alt: "Bambu Lab X2D FDM 3D printer"
-  },
-  {
-    label: "FDM Printer",
     title: "Bambu Lab H2C",
     description: "Large-format multi-hotend FDM",
     buildVolume: "Build volume · 330 × 320 × 325 mm",
@@ -57,6 +49,14 @@ const equipmentList: Array<{
     buildVolume: "Build volume · 340 × 320 × 340 mm",
     src: "/images/equipment-bambu-h2s.png",
     alt: "Bambu Lab H2S FDM 3D printer"
+  },
+  {
+    label: "FDM Printer",
+    title: "Bambu Lab X2D",
+    description: "Compact dual-nozzle FDM",
+    buildVolume: "Build volume · 256 × 256 × 260 mm",
+    src: "/images/equipment-bambu-x2d.png",
+    alt: "Bambu Lab X2D FDM 3D printer"
   },
   {
     label: "FDM Post-processing",

@@ -207,7 +207,7 @@ function ProjectCard({
         {storyHref ? (
           <Link
             href={storyHref}
-            className="focus-ring absolute left-4 top-4 rounded-full border border-white/50 bg-white/35 px-3 py-1.5 text-[11px] font-bold text-[#2F6BFF]/75 shadow-[0_4px_14px_rgba(24,24,27,0.06)] backdrop-blur-sm transition hover:border-white/75 hover:bg-white/65 hover:text-[#2F6BFF]"
+            className="focus-ring absolute left-4 top-4 rounded-full border border-white/60 bg-[#111111]/70 px-3 py-1.5 text-[11px] font-bold text-white shadow-[0_4px_14px_rgba(0,0,0,0.18)] backdrop-blur-sm transition hover:border-white/80 hover:bg-[#111111]/85"
           >
             View Story
           </Link>
