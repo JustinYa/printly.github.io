@@ -8,9 +8,7 @@ import { SiteHeader } from "@/components/site-header";
 
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const showcaseAutoplayDelay = 5500;
-const showcaseTransitionDuration = 650;
 
-type ShowcaseDirection = "next" | "previous";
 type HomeIconName =
   | "image"
   | "file"
@@ -153,9 +151,6 @@ function HomeIcon({ name, className = "size-7" }: { name: HomeIconName; classNam
 
 export default function Home() {
   const [currentExample, setCurrentExample] = useState(0);
-  const [previousExample, setPreviousExample] = useState<number | null>(null);
-  const [showcaseDirection, setShowcaseDirection] =
-    useState<ShowcaseDirection>("next");
   const [isShowcaseHovered, setIsShowcaseHovered] = useState(false);
   const currentEquipment = equipmentList[currentExample];
 
@@ -165,49 +160,26 @@ export default function Home() {
     }
 
     const timeoutId = window.setTimeout(() => {
-      setPreviousExample(currentExample);
-      setShowcaseDirection("next");
       setCurrentExample((currentExample + 1) % equipmentList.length);
     }, showcaseAutoplayDelay);
 
     return () => window.clearTimeout(timeoutId);
   }, [currentExample, isShowcaseHovered]);
 
-  useEffect(() => {
-    if (previousExample === null) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(
-      () => setPreviousExample(null),
-      showcaseTransitionDuration
-    );
-
-    return () => window.clearTimeout(timeoutId);
-  }, [currentExample, previousExample]);
-
-  function showExample(index: number, direction: ShowcaseDirection) {
+  function showExample(index: number) {
     if (index === currentExample) {
       return;
     }
 
-    setPreviousExample(currentExample);
-    setShowcaseDirection(direction);
     setCurrentExample(index);
   }
 
   function showPreviousExample() {
-    showExample(
-      currentExample === 0 ? equipmentList.length - 1 : currentExample - 1,
-      "previous"
-    );
+    showExample(currentExample === 0 ? equipmentList.length - 1 : currentExample - 1);
   }
 
   function showNextExample() {
-    showExample(
-      currentExample === equipmentList.length - 1 ? 0 : currentExample + 1,
-      "next"
-    );
+    showExample(currentExample === equipmentList.length - 1 ? 0 : currentExample + 1);
   }
 
   return (
@@ -278,42 +250,27 @@ export default function Home() {
             onMouseLeave={() => setIsShowcaseHovered(false)}
             className="relative aspect-square overflow-hidden rounded-lg border border-[#E4E9F1] bg-white shadow-soft"
           >
-            {equipmentList.map((equipment, index) => {
-              const isCurrent = index === currentExample;
-              const isPrevious = index === previousExample;
-              let animationClass = "z-0 opacity-0";
-
-              if (isCurrent) {
-                animationClass =
-                  previousExample === null
-                    ? "z-10 translate-x-0"
-                    : showcaseDirection === "next"
-                      ? "z-10 showcase-slide-in-right"
-                      : "z-10 showcase-slide-in-left";
-              } else if (isPrevious) {
-                animationClass =
-                  showcaseDirection === "next"
-                    ? "z-10 showcase-slide-out-left"
-                    : "z-10 showcase-slide-out-right";
-              }
-
-              return (
+            <div
+              className="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+              style={{ transform: `translateX(-${currentExample * 100}%)` }}
+            >
+              {equipmentList.map((equipment, index) => (
                 <div
                   key={equipment.src}
-                  aria-hidden={isCurrent ? undefined : true}
-                  className={`absolute inset-0 overflow-hidden ${animationClass}`}
+                  aria-hidden={index === currentExample ? undefined : true}
+                  className="relative h-full w-full shrink-0 overflow-hidden"
                 >
                   <Image
                     src={assetPath(equipment.src)}
-                    alt={isCurrent ? equipment.alt : ""}
+                    alt={index === currentExample ? equipment.alt : ""}
                     fill
                     priority={index === 0}
                     sizes="(min-width: 1024px) 28rem, 92vw"
                     className="object-contain"
                   />
                 </div>
-              );
-            })}
+              ))}
+            </div>
             <div className="pointer-events-none absolute inset-0 z-20 bg-gradient-to-t from-black/75 via-black/0 to-transparent" />
             <button
               type="button"
@@ -353,7 +310,7 @@ export default function Home() {
                     type="button"
                     aria-label={`Show ${equipment.title}`}
                     aria-current={index === currentExample ? "true" : undefined}
-                    onClick={() => showExample(index, index > currentExample ? "next" : "previous")}
+                    onClick={() => showExample(index)}
                     className={`focus-ring h-2.5 rounded-full transition-all ${
                       index === currentExample ? "w-8 bg-white" : "w-2.5 bg-white/70 hover:bg-white"
                     }`}
