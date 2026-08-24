@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const showcaseAutoplayDelay = 5500;
+const showcaseAutoplayDelay = 3000;
 
 type HomeIconName =
   | "image"

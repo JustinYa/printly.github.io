@@ -6,6 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 const contactEmail = "contact.printlylab@gmail.com";
+const contactPhone = "(920) 840-5302";
 const instagramUrl = "https://www.instagram.com/theprintlylab/?hl=en";
 const supportFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdy8woehAlDrSA1wL-Ksqe0MGnCQ2zHcIV5OfGymYANGYE_tA/viewform?usp=publish-editor";
@@ -112,6 +113,15 @@ export function ContactPage() {
                     className="focus-ring mt-2 inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
                   >
                     @theprintlylab
+                  </a>
+                </div>
+                <div className="mt-6">
+                  <p className="font-extrabold">Phone</p>
+                  <a
+                    className="focus-ring mt-2 inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
+                    href="tel:+19208405302"
+                  >
+                    {contactPhone}
                   </a>
                 </div>
                 <div className="mt-6">

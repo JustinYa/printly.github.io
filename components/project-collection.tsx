@@ -20,7 +20,6 @@ type ProjectCardData = {
   image: string;
   imageAlt: string;
   imageFit?: "cover" | "contain";
-  storyHref?: string;
 };
 
 type ServiceGroup = {
@@ -34,8 +33,8 @@ type ServiceGroup = {
 const serviceGroups: ServiceGroup[] = [
   {
     id: "fast-prototyping",
-    title: "Fast Prototyping",
-    description: "Custom models and rapid physical prototypes for testing ideas, fit, and presentation.",
+    title: "Product Development",
+    description: "Custom models and functional prototypes for testing ideas, fit, and performance.",
     icon: "bolt",
     projects: [
       {
@@ -45,45 +44,60 @@ const serviceGroups: ServiceGroup[] = [
         imageAlt: "Black custom keyboard prototype with two rotary controls and programmable keys"
       },
       {
+        title: "Racket Handle Mold",
+        description: "A 3D-printed mold developed for forming and testing a custom tennis racket handle.",
+        image: "/images/project-tennis-racket-handle-mold.webp",
+        imageAlt: "Red and black 3D-printed mold for a custom tennis racket handle"
+      },
+      {
+        title: "3D-Printed Robotic Arm",
+        description: "A modular robotic arm that uses 3D printing for faster component updates and continuous design iteration.",
+        image: "/images/project-3d-printed-robotic-arm.webp",
+        imageAlt: "Blue, white, and black 3D-printed robotic arm with exposed gears and wiring"
+      },
+      {
         title: "Real-Time Water Beacon",
         description: "A functional beacon prototype with custom housings for electronics and deployment hardware.",
         image: "/images/project-realtime-water-beacon.webp",
-        imageAlt: "Real-time water beacon prototypes and internal electronic components",
-        imageFit: "contain"
+        imageAlt: "Real-time water beacon prototypes and internal electronic components"
       },
       {
-        title: "Custom Lighter Display Stand",
-        description: "A branded display stand designed and produced from customer-supplied reference images.",
+        title: "Lighter Display Stand",
+        description: "A branded display stand designed and printed from customer-supplied reference images.",
         image: "/images/project-custom-lighter-display.webp",
         imageAlt: "Custom green and white lighter display stand with orange branding"
       },
       {
         title: "Smart Fish Tank",
         description: "A multi-part smart fish tank enclosure developed from customer reference images.",
-        image: "/images/project-smart-fish-tank.webp",
-        imageAlt: "Full-scale gray smart fish tank enclosure prototype on a wooden surface",
-        storyHref: "/projects/smart-fish-tank/"
-      },
-      {
-        title: "Custom Resin Figures",
-        description: "High-detail resin figures modeled from customer-supplied reference images.",
-        image: "/images/project-custom-resin-figures.webp",
-        imageAlt: "Four high-detail white resin character figures on a black background"
+        image: "/images/project-smart-fish-tank-cad.webp",
+        imageAlt: "CAD assembly model of the smart fish tank and internal components"
       }
     ]
   },
   {
     id: "one-to-one-replication",
-    title: "1:1 Replication",
+    title: "Parts Replication",
     description: "Accurate replacements recreated from an original sample or precise measurements.",
     icon: "scan",
     projects: [
       {
-        title: "Mercedes-Benz Van Wiper Clip",
-        description: "A discontinued windshield-wiper retaining clip recreated at 1:1 scale.",
+        title: "Van Wiper Clip",
+        description: "A discontinued van wiper clip recreated at 1:1 scale for a precise replacement.",
         image: "/images/project-mercedes-van-wiper-clip.webp",
-        imageAlt: "Mercedes-Benz van wiper assembly and replicated black retaining clips",
-        storyHref: "/projects/wiper-part/"
+        imageAlt: "Mercedes-Benz van wiper assembly and replicated black retaining clips"
+      },
+      {
+        title: "Industrial Oven Part",
+        description: "A 3D-printed sensor part recreated at 1:1 scale to reduce industrial oven repair costs.",
+        image: "/images/project-industrial-oven-sensor-part.webp",
+        imageAlt: "Original gray industrial oven sensor component beside its black 3D-printed replacement"
+      },
+      {
+        title: "Discontinued Fence",
+        description: "A discontinued fence component recreated at 1:1 scale to restore the original assembly.",
+        image: "/images/project-discontinued-fence-component.webp",
+        imageAlt: "White discontinued fence component held in front of its yellow CAD model"
       }
     ]
   },
@@ -97,8 +111,19 @@ const serviceGroups: ServiceGroup[] = [
         title: "Painted Resin Bust",
         description: "A high-detail resin bust produced from an existing 3D file and hand painted.",
         image: "/images/project-painted-resin-bust-replica.webp",
-        imageAlt: "Hand-painted high-detail resin character bust in an artist workspace",
-        storyHref: "/projects/painted-bust/"
+        imageAlt: "Hand-painted high-detail resin character bust in an artist workspace"
+      },
+      {
+        title: "3D-Printed Crawlers",
+        description: "Detailed rock crawler models produced directly from customer-supplied 3D files.",
+        image: "/images/project-3d-printed-rock-crawlers.webp",
+        imageAlt: "Three detailed 3D-printed rock crawler models on a wooden workbench"
+      },
+      {
+        title: "Drone Protection Kit",
+        description: "Flexible drone protection parts printed from supplied files to absorb impact damage.",
+        image: "/images/project-flexible-drone-protection-kit.webp",
+        imageAlt: "Racing drone fitted with flexible black and orange 3D-printed protection parts"
       }
     ]
   }
@@ -176,13 +201,11 @@ function PlaceholderVisual({ index, label }: { index: number; label: string }) {
 function ProjectCard({
   projectNumber,
   projectIndex,
-  project,
-  storyHref
+  project
 }: {
   projectNumber: number;
   projectIndex: number;
   project?: ProjectCardData;
-  storyHref?: string;
 }) {
   const projectLabel = project?.title ?? `Project ${String(projectNumber).padStart(2, "0")}`;
   const projectDescription =
@@ -204,14 +227,6 @@ function ProjectCard({
         ) : (
           <PlaceholderVisual index={projectIndex} label={`Placeholder image for ${projectLabel}`} />
         )}
-        {storyHref ? (
-          <Link
-            href={storyHref}
-            className="focus-ring absolute left-4 top-4 rounded-full border border-white/60 bg-[#111111]/70 px-3 py-1.5 text-[11px] font-bold text-white shadow-[0_4px_14px_rgba(0,0,0,0.18)] backdrop-blur-sm transition hover:border-white/80 hover:bg-[#111111]/85"
-          >
-            View Story
-          </Link>
-        ) : null}
       </div>
       <div className="p-5">
         <h3 className="text-lg font-extrabold">{projectLabel}</h3>
@@ -274,7 +289,6 @@ function ServiceBoard({
                 projectNumber={index + 1}
                 projectIndex={index}
                 project={project}
-                storyHref={project?.storyHref}
               />
             ))}
           </ul>
