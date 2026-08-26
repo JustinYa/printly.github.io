@@ -50,6 +50,12 @@ const serviceGroups: ServiceGroup[] = [
         imageAlt: "Red and black 3D-printed mold for a custom tennis racket handle"
       },
       {
+        title: "Lightweight Racket Handle",
+        description: "A foamed 3D-printed racket handle developed to reduce weight while maintaining a solid grip.",
+        image: "/images/project-lightweight-racket-handle.webp",
+        imageAlt: "Tennis racket fitted with a white lightweight foamed 3D-printed handle"
+      },
+      {
         title: "3D-Printed Robotic Arm",
         description: "A modular robotic arm that uses 3D printing for faster component updates and continuous design iteration.",
         image: "/images/project-3d-printed-robotic-arm.webp",
