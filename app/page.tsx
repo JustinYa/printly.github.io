@@ -186,7 +186,7 @@ export default function Home() {
     <main id="top" className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="home" />
 
-      <section className="container-page grid gap-10 py-16 sm:gap-12 sm:py-20 lg:grid-cols-[0.45fr_0.55fr] lg:items-center lg:py-24">
+      <section className="container-page grid gap-8 py-12 sm:gap-12 sm:py-20 lg:grid-cols-[0.45fr_0.55fr] lg:items-center lg:py-24">
         <div className="mx-auto max-w-xl text-center sm:text-left lg:mx-0">
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
             Resin and FDM 3D Printing
@@ -200,7 +200,7 @@ export default function Home() {
             Professional design, prototyping, and custom 3D printing — all in
             one place.
           </p>
-          <div className="mt-8 grid auto-rows-fr gap-4 text-left sm:grid-cols-3">
+          <div className="mt-7 grid auto-rows-fr gap-3 text-left sm:mt-8 sm:grid-cols-3 sm:gap-4">
             {[
               {
                 lead: "Flexible",
@@ -217,7 +217,7 @@ export default function Home() {
             ].map((benefit) => (
               <div
                 key={benefit.lead}
-                className="flex h-full flex-col items-start justify-center rounded-xl border border-[#E4E9F1] bg-white p-5 shadow-soft"
+                className="flex h-full flex-col items-start justify-center rounded-xl border border-[#E4E9F1] bg-white p-4 shadow-soft sm:p-5"
               >
                 <h2 className="text-xl font-extrabold leading-tight text-[#18181B]">
                   {benefit.lead}
@@ -323,7 +323,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container-page pb-20 sm:pb-24">
+      <section className="container-page pb-16 sm:pb-24">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
             Core Services
@@ -332,11 +332,11 @@ export default function Home() {
             Three Ways We Can Help
           </h2>
         </div>
-        <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:mt-12 md:grid-cols-3">
+        <div className="mx-auto mt-8 grid max-w-6xl gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
           {coreServices.map((service) => (
             <article
               key={service.title}
-              className="rounded-lg border border-[#ECEFF5] bg-white p-7 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF]"
+              className="rounded-lg border border-[#ECEFF5] bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] sm:p-7"
             >
               <div className="grid size-12 place-items-center rounded-lg bg-[#EAF2FF] text-[#2F6BFF]">
                 <HomeIcon name={service.icon} className="size-7" />
@@ -350,13 +350,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[#F8FAFD] py-20 sm:py-24 lg:py-28">
+      <section className="bg-[#F8FAFD] py-16 sm:py-24 lg:py-28">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">Explore Printly</p>
             <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Everything Has Its Place</h2>
           </div>
-          <div className="mx-auto mt-10 grid max-w-5xl gap-6 sm:mt-12 md:grid-cols-3">
+          <div className="mx-auto mt-8 grid max-w-5xl gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
             {[
               { title: "Projects", text: "Browse selected design and production work.", href: "/projects/" },
               { title: "Quote", text: "Review services and upload a model.", href: "/quote/" },
@@ -365,7 +365,7 @@ export default function Home() {
               <Link
                 key={item.title}
                 href={item.href}
-                className="focus-ring group rounded-lg border border-[#ECEFF5] bg-white p-7 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF]"
+                className="focus-ring group rounded-lg border border-[#ECEFF5] bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] sm:p-7"
               >
                 <h3 className="text-xl font-extrabold transition group-hover:text-[#2F6BFF]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[#555555]">{item.text}</p>

@@ -218,7 +218,7 @@ function ProjectCard({
     project?.description ?? "Photos and project information coming soon.";
 
   return (
-    <li className="w-[78vw] max-w-[310px] shrink-0 snap-start overflow-hidden rounded-xl border border-[#E4EAF4] bg-white shadow-[0_8px_24px_rgba(24,24,27,0.05)]">
+    <li className="w-[78vw] max-w-[310px] shrink-0 snap-start overflow-hidden rounded-xl border border-[#E4EAF4] bg-white shadow-[0_8px_24px_rgba(24,24,27,0.05)] sm:w-[310px]">
       <div className="relative">
         {project ? (
           <div className="relative aspect-[4/3] overflow-hidden bg-[#111111]">
@@ -234,7 +234,7 @@ function ProjectCard({
           <PlaceholderVisual index={projectIndex} label={`Placeholder image for ${projectLabel}`} />
         )}
       </div>
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <h3 className="text-lg font-extrabold">{projectLabel}</h3>
         <p className="mt-1 text-sm text-[#7A7A7A]">{projectDescription}</p>
       </div>
@@ -260,13 +260,13 @@ function ServiceBoard({
         aria-expanded={isOpen}
         aria-controls={panelId}
         onClick={() => setIsOpen((current) => !current)}
-        className="focus-ring group flex w-full items-center gap-4 p-5 text-left transition hover:bg-[#F8FAFD] sm:gap-6 sm:p-7"
+        className="focus-ring group flex w-full items-center gap-3 p-4 text-left transition hover:bg-[#F8FAFD] sm:gap-6 sm:p-7"
       >
-        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#EAF2FF] text-[#2F6BFF] sm:h-14 sm:w-14">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EAF2FF] text-[#2F6BFF] sm:h-14 sm:w-14">
           <ServiceIcon name={group.icon} />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-xl font-extrabold leading-tight sm:text-2xl">
+          <span className="block text-lg font-extrabold leading-tight sm:text-2xl">
             {group.title}
           </span>
           <span className="mt-1.5 hidden text-sm leading-6 text-[#555555] sm:block">
@@ -275,7 +275,7 @@ function ServiceBoard({
         </span>
         <span
           aria-hidden="true"
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#DDE5F1] text-xl font-semibold text-[#2F6BFF] transition duration-300 group-hover:border-[#2F6BFF] ${
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#DDE5F1] text-lg font-semibold text-[#2F6BFF] transition duration-300 group-hover:border-[#2F6BFF] sm:h-10 sm:w-10 sm:text-xl ${
             isOpen ? "rotate-45 bg-[#EAF2FF]" : "bg-white"
           }`}
         >
@@ -284,10 +284,10 @@ function ServiceBoard({
       </button>
 
       {isOpen ? (
-        <div id={panelId} className="border-t border-[#E4EAF4] bg-[#F8FAFD] p-5 sm:p-7">
+        <div id={panelId} className="border-t border-[#E4EAF4] bg-[#F8FAFD] p-4 sm:p-7">
           <ul
             aria-label={`${group.title} project placeholders`}
-            className="project-strip -mx-1 flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-3"
+            className="project-strip -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3 sm:gap-4"
           >
             {projects.map((project, index) => (
               <ProjectCard
@@ -309,16 +309,16 @@ export function ProjectCollection() {
     <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="projects" />
 
-      <section className="container-page flex min-h-[184px] flex-col justify-center text-center sm:min-h-[204px] lg:min-h-[228px]">
+      <section className="container-page flex min-h-[156px] flex-col justify-center text-left sm:min-h-[204px] lg:min-h-[228px] lg:text-center">
         <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
           Selected <span className="text-[#2F6BFF]">Work</span>
         </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#555555] sm:text-lg">
+        <p className="mt-5 max-w-2xl text-base leading-7 text-[#555555] sm:text-lg lg:mx-auto">
           Open a service to explore selected prototyping, replication, and file production projects.
         </p>
       </section>
 
-      <section className="container-page pb-14 pt-0 sm:pb-16 lg:pb-20">
+      <section className="container-page pb-12 pt-0 sm:pb-16 lg:pb-20">
         <div className="space-y-5">
           {serviceGroups.map((group) => (
             <ServiceBoard
@@ -331,7 +331,7 @@ export function ProjectCollection() {
       </section>
 
       <section className="container-page pb-20 sm:pb-24">
-        <div className="flex flex-col items-start justify-between gap-8 rounded-2xl bg-[#F8FAFD] p-8 sm:p-10 md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-[#F8FAFD] p-6 sm:gap-8 sm:p-10 md:flex-row md:items-center">
           <div>
             <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
               Start a Project

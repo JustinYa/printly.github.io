@@ -158,7 +158,7 @@ export function QuotePage() {
     <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="quote" />
 
-      <section className="container-page grid gap-10 py-16 sm:py-20 lg:grid-cols-[0.58fr_0.42fr] lg:items-center lg:gap-16 lg:py-24">
+      <section className="container-page grid gap-8 py-12 sm:gap-10 sm:py-20 lg:grid-cols-[0.58fr_0.42fr] lg:items-center lg:gap-16 lg:py-24">
         <div>
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
             Quote
@@ -179,7 +179,7 @@ export function QuotePage() {
             Upload Your Model
           </a>
         </div>
-        <div className="rounded-lg border border-[#E3E8F0] bg-[#F8FAFD] p-7 shadow-soft sm:p-9">
+        <div className="rounded-lg border border-[#E3E8F0] bg-[#F8FAFD] p-6 shadow-soft sm:p-9">
           <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
             Before You Submit
           </p>
@@ -191,7 +191,7 @@ export function QuotePage() {
         </div>
       </section>
 
-      <section className="bg-[#F8FAFD] py-20 sm:py-24 lg:py-28">
+      <section className="bg-[#F8FAFD] py-16 sm:py-24 lg:py-28">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
@@ -201,8 +201,8 @@ export function QuotePage() {
               What We Offer
             </h2>
           </div>
-          <div className="mx-auto mt-10 grid max-w-6xl gap-6 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
-            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF]">
+          <div className="mx-auto mt-8 grid max-w-6xl gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
+            <div className="rounded-lg border border-[#ECEFF5] bg-white p-6 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] sm:p-8">
               <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
                 <QuoteIcon name="cube" className="size-10" />
               </div>
@@ -256,7 +256,7 @@ export function QuotePage() {
               </div>
             </OptionCard>
 
-            <div className="rounded-lg border border-[#ECEFF5] bg-white p-8 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF]">
+            <div className="rounded-lg border border-[#ECEFF5] bg-white p-6 text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] sm:p-8">
               <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
                 <QuoteIcon name="package" className="size-10" />
               </div>
@@ -269,12 +269,12 @@ export function QuotePage() {
         </div>
       </section>
 
-      <section className="container-page py-20 sm:py-24 lg:py-28">
+      <section className="container-page py-16 sm:py-24 lg:py-28">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">How It Works</p>
           <h2 className="mt-3 text-3xl font-extrabold leading-tight sm:text-4xl">Four Simple Steps</h2>
         </div>
-        <div className="mx-auto mt-10 grid max-w-6xl gap-8 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto mt-8 grid max-w-6xl gap-7 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
           {steps.map((step, index) => (
             <div key={step.title} className="relative text-center">
               {index < steps.length - 1 ? (
@@ -311,7 +311,7 @@ function OptionCard({
 }) {
   return (
     <div className="relative overflow-hidden rounded-lg border border-[#ECEFF5] bg-white text-center shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF]">
-      <div className={`p-8 transition duration-300 ${comingSoon ? "opacity-30 grayscale" : "opacity-100"}`}>
+      <div className={`p-6 transition duration-300 sm:p-8 ${comingSoon ? "opacity-30 grayscale" : "opacity-100"}`}>
         <div className="mx-auto grid size-14 place-items-center text-[#2F6BFF]">
           <QuoteIcon name={icon} className="size-10" />
         </div>

@@ -25,8 +25,11 @@ body {
 }
 
 .project-strip {
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: 0.25rem;
   scrollbar-color: #b8c9ed transparent;
   scrollbar-width: thin;
+  touch-action: pan-x;
 }
 
 .project-strip::-webkit-scrollbar {

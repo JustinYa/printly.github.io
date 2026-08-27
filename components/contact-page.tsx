@@ -79,19 +79,19 @@ export function ContactPage() {
     <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="contact" />
 
-      <section className="container-page flex min-h-[184px] flex-col justify-center text-center sm:min-h-[204px] lg:min-h-[228px]">
+      <section className="container-page flex min-h-[156px] flex-col justify-center text-left sm:min-h-[204px] lg:min-h-[228px] lg:text-center">
         <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
           How Can We Help?
         </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[#555555] sm:text-lg">
+        <p className="mt-5 max-w-2xl text-base leading-7 text-[#555555] sm:text-lg lg:mx-auto">
           Ask a question about your model, material, order, or the printing process.
         </p>
       </section>
 
-      <section className="container-page pb-20 sm:pb-24 lg:pb-28">
+      <section className="container-page pb-16 sm:pb-24 lg:pb-28">
         <div className="overflow-hidden rounded-lg border border-[#ECEFF5] bg-white shadow-soft">
           <div className="grid lg:grid-cols-[0.34fr_0.66fr]">
-            <aside className="bg-[#F8FAFD] p-7 sm:p-10 lg:p-12">
+            <aside className="bg-[#F8FAFD] p-6 sm:p-10 lg:p-12">
               <h2 className="text-xl font-extrabold leading-tight sm:text-2xl">
                 Get
                 <br />
@@ -103,7 +103,7 @@ export function ContactPage() {
                 <br />
                 We are here to help.
               </p>
-              <div className="mt-14 border-t border-[#ECEFF5] pt-8 text-sm lg:mt-24">
+              <div className="mt-8 border-t border-[#ECEFF5] pt-6 text-sm sm:mt-14 sm:pt-8 lg:mt-24">
                 <div>
                   <p className="font-extrabold">Instagram</p>
                   <a
@@ -115,7 +115,7 @@ export function ContactPage() {
                     @theprintlylab
                   </a>
                 </div>
-                <div className="mt-6">
+                <div className="mt-5 sm:mt-6">
                   <p className="font-extrabold">Phone</p>
                   <a
                     className="focus-ring mt-2 inline-flex rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
@@ -124,7 +124,7 @@ export function ContactPage() {
                     {contactPhone}
                   </a>
                 </div>
-                <div className="mt-6">
+                <div className="mt-5 sm:mt-6">
                 <p className="font-extrabold">Need urgent help?</p>
                 <a
                   className="focus-ring mt-2 inline-flex break-all rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
@@ -142,21 +142,21 @@ export function ContactPage() {
               </div>
             </aside>
 
-            <div className="grid content-center gap-8 p-7 sm:p-10 lg:p-14">
+            <div className="grid content-center gap-6 p-6 sm:gap-8 sm:p-10 lg:p-14">
               <div>
                 <h2 className="max-w-xl text-xl font-extrabold leading-tight sm:text-2xl">
                   Tell us how we
                   <br />
                   can help<span className="text-[#2F6BFF]">.</span>
                 </h2>
-                <p className="mt-6 max-w-lg text-base leading-7 text-[#555555]">
+                <p className="mt-4 max-w-lg text-base leading-7 text-[#555555] sm:mt-6">
                   Fill out the support form with as much detail as possible. You can also upload files or screenshots to help us understand your question better.
                 </p>
                 <a
                   href={supportFormUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="focus-ring mt-7 inline-flex min-h-[56px] w-full items-center justify-between gap-6 rounded-lg bg-[#2F6BFF] px-6 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6] sm:w-auto sm:min-w-72"
+                  className="focus-ring mt-6 inline-flex min-h-[56px] w-full items-center justify-between gap-3 rounded-lg bg-[#2F6BFF] px-4 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6] sm:mt-7 sm:w-auto sm:min-w-72 sm:gap-6 sm:px-6"
                 >
                   <span className="inline-flex items-center gap-3">
                     <ContactIcon name="mail" />
