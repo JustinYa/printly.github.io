@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 const contactEmail = "contact.printlylab@gmail.com";
-const contactPhone = "(920) 840-5302";
+const contactPhone = "+1 (920) 840-5302";
 const instagramUrl = "https://www.instagram.com/theprintlylab/?hl=en";
 const supportFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdy8woehAlDrSA1wL-Ksqe0MGnCQ2zHcIV5OfGymYANGYE_tA/viewform?usp=publish-editor";
