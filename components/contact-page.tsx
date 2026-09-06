@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 
 const contactEmail = "contact.printlylab@gmail.com";
 const contactPhone = "+1 (920) 840-5302";
+const contactLocation = "Oshkosh, WI";
 const instagramUrl = "https://www.instagram.com/theprintlylab/?hl=en";
 const supportFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLSdy8woehAlDrSA1wL-Ksqe0MGnCQ2zHcIV5OfGymYANGYE_tA/viewform?usp=publish-editor";
@@ -123,6 +124,10 @@ export function ContactPage() {
                   >
                     {contactPhone}
                   </a>
+                </div>
+                <div className="mt-5 sm:mt-6">
+                  <p className="font-extrabold">Location</p>
+                  <p className="mt-2 font-extrabold text-[#2F6BFF]">{contactLocation}</p>
                 </div>
                 <div className="mt-5 sm:mt-6">
                 <p className="font-extrabold">Need urgent help?</p>

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 const contactEmail = "contact.printlylab@gmail.com";
 const contactPhone = "+1 (920) 840-5302";
+const contactLocation = "Oshkosh, WI";
 
 export function SiteFooter() {
   return (
@@ -18,6 +19,7 @@ export function SiteFooter() {
           <a className="transition hover:text-[#2F6BFF]" href="tel:+19208405302">
             {contactPhone}
           </a>
+          <span>{contactLocation}</span>
         </div>
       </div>
     </footer>
