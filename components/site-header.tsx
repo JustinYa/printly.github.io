@@ -37,8 +37,8 @@ export function SiteHeader({ activePage }: { activePage: SitePage }) {
           <Image
             src={assetPath("/images/printly-logo-transparent.png")}
             alt="Printly"
-            width={1242}
-            height={388}
+            width={6280}
+            height={1716}
             priority
             sizes="(min-width: 1024px) 234px, (min-width: 640px) 192px, 176px"
             className="h-auto w-44 object-contain sm:w-48 lg:w-[14.625rem]"
