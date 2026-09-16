@@ -4,10 +4,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://printlylab.com"),
-  title: "Printly | Resin and FDM 3D Printing",
+  title: "Printly | Professional CAD Design and 3D Printing",
   description:
-    "Minimal resin and FDM 3D printing quote page. Upload your model, choose material and color, and request a quote.",
+    "Professional CAD design and custom 3D printing in Oshkosh, Wisconsin. Product prototypes, replacement parts, and resin and FDM printing from your files.",
   keywords: [
+    "CAD design",
+    "professional 3D printing",
     "FDM 3D printing",
     "resin 3D printing",
     "custom 3D prints",
