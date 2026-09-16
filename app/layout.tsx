@@ -2,11 +2,21 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 
+const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://printlylab.com"),
   title: "Printly | Professional CAD Design and 3D Printing",
   description:
     "Professional CAD design and custom 3D printing in Oshkosh, Wisconsin. Product prototypes, replacement parts, and resin and FDM printing from your files.",
+  icons: {
+    icon: [
+      { url: `${siteBasePath}/favicon.ico`, type: "image/x-icon", sizes: "16x16 32x32 48x48 256x256" },
+      { url: `${siteBasePath}/favicon.png`, type: "image/png", sizes: "512x512" }
+    ],
+    shortcut: `${siteBasePath}/favicon.ico`,
+    apple: { url: `${siteBasePath}/apple-touch-icon.png`, type: "image/png", sizes: "180x180" }
+  },
   keywords: [
     "CAD design",
     "professional 3D printing",
