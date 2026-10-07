@@ -284,7 +284,7 @@ export default function Home() {
               type="button"
               aria-label="Previous equipment"
               onClick={showPreviousExample}
-              className="focus-ring absolute left-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 transition hover:bg-black/35 hover:text-white"
+              className="focus-ring absolute left-3 top-1/2 z-40 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 transition hover:bg-black/35 hover:text-white"
             >
               <HomeIcon name="chevronLeft" className="size-4" />
             </button>
@@ -292,11 +292,11 @@ export default function Home() {
               type="button"
               aria-label="Next equipment"
               onClick={showNextExample}
-              className="focus-ring absolute right-3 top-1/2 z-30 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 transition hover:bg-black/35 hover:text-white"
+              className="focus-ring absolute right-3 top-1/2 z-40 grid size-11 -translate-y-1/2 place-items-center rounded-full border border-white/25 bg-black/20 text-white/80 transition hover:bg-black/35 hover:text-white"
             >
               <HomeIcon name="chevronRight" className="size-4" />
             </button>
-            <div className="absolute inset-x-0 bottom-0 z-30 p-4 text-white sm:p-5">
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 p-4 text-white sm:p-5">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-white/70">
                 {currentEquipment.label}
               </p>
@@ -319,7 +319,7 @@ export default function Home() {
                     aria-label={`Show ${equipment.title}`}
                     aria-current={index === currentExample ? "true" : undefined}
                     onClick={() => showExample(index)}
-                    className={`focus-ring h-2.5 rounded-full transition-all ${
+                    className={`focus-ring pointer-events-auto h-2.5 rounded-full transition-all ${
                       index === currentExample ? "w-8 bg-white" : "w-2.5 bg-white/70 hover:bg-white"
                     }`}
                   />
