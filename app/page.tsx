@@ -80,17 +80,17 @@ const coreServices: Array<{
 }> = [
   {
     title: "Design from Images",
-    description: "Share reference photos, sketches, or measurements and we will create a printable 3D model.",
+    description: "Photos or sketches turned into a 3D model.",
     icon: "image"
   },
   {
     title: "Print from Files",
-    description: "Send your ready-to-print STL, 3MF, OBJ, or STEP file and we will prepare it for production.",
+    description: "Your 3D files printed into physical parts.",
     icon: "file"
   },
   {
     title: "1:1 Replication",
-    description: "Recreate hard-to-find parts at true size from an original sample or precise measurements.",
+    description: "Replacement parts recreated from a sample.",
     icon: "scan"
   }
 ];
@@ -153,9 +153,18 @@ export default function Home() {
   const [currentExample, setCurrentExample] = useState(0);
   const [isShowcaseHovered, setIsShowcaseHovered] = useState(false);
   const currentEquipment = equipmentList[currentExample];
+  const [reduceMotion, setReduceMotion] = useState(true);
 
   useEffect(() => {
-    if (isShowcaseHovered) {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (isShowcaseHovered || reduceMotion) {
       return;
     }
 
@@ -164,7 +173,7 @@ export default function Home() {
     }, showcaseAutoplayDelay);
 
     return () => window.clearTimeout(timeoutId);
-  }, [currentExample, isShowcaseHovered]);
+  }, [currentExample, isShowcaseHovered, reduceMotion]);
 
   function showExample(index: number) {
     if (index === currentExample) {
@@ -186,57 +195,56 @@ export default function Home() {
     <main id="top" className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="home" />
 
-      <section className="container-page grid gap-8 py-12 sm:gap-12 sm:py-20 lg:grid-cols-[0.45fr_0.55fr] lg:items-center lg:py-24">
-        <div className="mx-auto max-w-xl text-center sm:text-left lg:mx-0">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
-            Resin and FDM 3D Printing
-          </p>
-          <h1 className="mx-auto mt-4 max-w-[28rem] text-3xl font-extrabold leading-tight sm:mx-0 sm:text-4xl">
-            Bring Your <span className="text-[#2F6BFF]">Ideas</span>
-            <br />
-            To <span className="text-[#2F6BFF]">Life</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-lg text-base leading-[1.65] text-[#555555] sm:mx-0 sm:mt-6 sm:text-lg">
-            Professional design, prototyping, and custom 3D printing — all in
-            one place.
-          </p>
-          <div className="mt-7 grid auto-rows-fr gap-3 text-left sm:mt-8 sm:grid-cols-3 sm:gap-4">
+      <section className="container-page py-8 sm:py-12">
+        <p className="text-xs font-semibold text-[#555555]">Oshkosh, WI</p>
+        <h1 className="mt-3 text-[1.75rem] font-extrabold leading-tight sm:text-4xl">
+          CAD Design &amp; <span className="inline-block text-[#2F6BFF]">3D Printing</span>
+        </h1>
+        <p className="mt-3 max-w-xl text-base leading-7 text-[#555555]">
+          Prototypes, replacement parts, and small production runs.
+        </p>
+        <Link href="/quote/" className="focus-ring mt-5 inline-flex min-h-12 items-center rounded-lg bg-[#2F6BFF] px-6 text-sm font-extrabold text-white transition hover:bg-[#1F5AF6]">
+          Request a Quote
+        </Link>
+      </section>
+
+      <section aria-labelledby="services-heading" className="container-page pb-8 sm:pb-12">
+        <h2 id="services-heading" className="text-xl font-extrabold sm:text-2xl">How we can help</h2>
+        <div className="mt-4 grid divide-y divide-[#ECEFF5] rounded-lg border border-[#ECEFF5] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          {coreServices.map((service) => (
+            <article key={service.title} className="flex items-start gap-3 p-4 sm:p-5">
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-[#EAF2FF] text-[#2F6BFF]"><HomeIcon name={service.icon} className="size-5" /></span>
+              <div><h3 className="text-sm font-extrabold sm:text-base">{service.title}</h3><p className="mt-1 text-sm leading-6 text-[#555555]">{service.description}</p></div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section aria-labelledby="work-heading" className="bg-[#F8FAFD] py-7 sm:py-10">
+        <div className="container-page">
+          <div className="flex items-center justify-between gap-3">
+            <h2 id="work-heading" className="text-xl font-extrabold sm:text-2xl">Selected work</h2>
+            <Link href="/projects/" className="focus-ring inline-flex min-h-11 items-center rounded text-sm font-bold text-[#2F6BFF]">All projects →</Link>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:gap-5">
             {[
-              {
-                lead: "Flexible",
-                phrase: "for every iteration",
-              },
-              {
-                lead: "Fast",
-                phrase: "from model to finished part",
-              },
-              {
-                lead: "Cost-effective",
-                phrase: "for prototypes and small runs",
-              },
-            ].map((benefit) => (
-              <div
-                key={benefit.lead}
-                className="flex h-full flex-col items-start justify-center rounded-xl border border-[#E4E9F1] bg-white p-4 shadow-soft sm:p-5"
-              >
-                <h2 className="text-xl font-extrabold leading-tight text-[#18181B]">
-                  {benefit.lead}
-                </h2>
-                <p className="mt-2 text-sm font-medium leading-5 text-[#666666]">
-                  {benefit.phrase}
-                </p>
-              </div>
+              { title: "Racket Handle Mold", src: "/images/project-tennis-racket-handle-mold.webp", alt: "3D-printed tennis racket handle mold" },
+              { title: "Industrial Oven Part", src: "/images/project-industrial-oven-sensor-part.webp", alt: "Original oven part and printed replacement" }
+            ].map((project) => (
+              <Link key={project.title} href="/projects/" className="focus-ring overflow-hidden rounded-lg border border-[#ECEFF5] bg-white">
+                <div className="relative aspect-[4/3]"><Image src={assetPath(project.src)} alt={project.alt} fill sizes="(min-width: 1024px) 480px, 45vw" className="object-cover" /></div>
+                <h3 className="p-3 text-sm font-extrabold sm:p-4 sm:text-base">{project.title}</h3>
+              </Link>
             ))}
           </div>
         </div>
+      </section>
 
-        <div className="mx-auto w-full max-w-[28rem] lg:ml-auto">
+      <section className="container-page py-6 sm:py-10">
+        <div className="mx-auto w-full max-w-[24rem]">
           <div className="mb-4 flex items-end justify-between gap-4 text-left">
             <div>
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
-                Our Capabilities
-              </p>
-              <h2 className="mt-1 text-2xl font-extrabold">Equipment List</h2>
+              <h2 className="text-xl font-extrabold sm:text-2xl">Our equipment</h2>
             </div>
             <p className="pb-1 text-xs font-bold uppercase tracking-[0.12em] text-[#777777]">
               6 Systems
@@ -248,7 +256,7 @@ export default function Home() {
             aria-label="Our equipment"
             onMouseEnter={() => setIsShowcaseHovered(true)}
             onMouseLeave={() => setIsShowcaseHovered(false)}
-            className="relative aspect-square overflow-hidden rounded-lg border border-[#E4E9F1] bg-white shadow-soft"
+            className="relative aspect-[4/3] overflow-hidden rounded-lg border border-[#E4E9F1] bg-white shadow-soft"
           >
             <div
               className="absolute inset-0 flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
@@ -264,7 +272,7 @@ export default function Home() {
                     src={assetPath(equipment.src)}
                     alt={index === currentExample ? equipment.alt : ""}
                     fill
-                    priority={index === 0}
+                    loading="lazy"
                     sizes="(min-width: 1024px) 28rem, 92vw"
                     className="object-contain"
                   />
@@ -319,59 +327,6 @@ export default function Home() {
               </div>
             </div>
             <p className="sr-only" aria-live="off">Showing {currentEquipment.title}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="container-page pb-16 sm:pb-24">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
-            Core Services
-          </p>
-          <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">
-            Three Ways We Can Help
-          </h2>
-        </div>
-        <div className="mx-auto mt-8 grid max-w-6xl gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
-          {coreServices.map((service) => (
-            <article
-              key={service.title}
-              className="rounded-lg border border-[#ECEFF5] bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] sm:p-7"
-            >
-              <div className="grid size-12 place-items-center rounded-lg bg-[#EAF2FF] text-[#2F6BFF]">
-                <HomeIcon name={service.icon} className="size-7" />
-              </div>
-              <h3 className="mt-5 text-xl font-extrabold">{service.title}</h3>
-              <p className="mt-3 text-sm leading-6 text-[#555555]">
-                {service.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-[#F8FAFD] py-16 sm:py-24 lg:py-28">
-        <div className="container-page">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">Explore Printly</p>
-            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Everything Has Its Place</h2>
-          </div>
-          <div className="mx-auto mt-8 grid max-w-5xl gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
-            {[
-              { title: "Projects", text: "Browse selected design and production work.", href: "/projects/" },
-              { title: "Quote", text: "Review services and upload a model.", href: "/quote/" },
-              { title: "Contact Us", text: "Ask a question or get support.", href: "/contact/" }
-            ].map((item) => (
-              <Link
-                key={item.title}
-                href={item.href}
-                className="focus-ring group rounded-lg border border-[#ECEFF5] bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-[#2F6BFF] sm:p-7"
-              >
-                <h3 className="text-xl font-extrabold transition group-hover:text-[#2F6BFF]">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-[#555555]">{item.text}</p>
-                <span className="mt-6 inline-flex text-sm font-extrabold text-[#2F6BFF]">Open -&gt;</span>
-              </Link>
-            ))}
           </div>
         </div>
       </section>

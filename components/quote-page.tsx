@@ -158,16 +158,16 @@ export function QuotePage() {
     <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="quote" />
 
-      <section className="container-page grid gap-8 py-12 sm:gap-10 sm:py-20 lg:grid-cols-[0.58fr_0.42fr] lg:items-center lg:gap-16 lg:py-24">
+      <section className="container-page grid gap-8 py-8 sm:gap-10 sm:py-12 lg:grid-cols-[0.58fr_0.42fr] lg:items-center lg:gap-16 lg:py-16">
         <div>
           <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
             Quote
           </p>
-          <h1 className="mt-4 max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
+          <h1 className="mt-4 max-w-2xl text-2xl font-extrabold leading-tight sm:text-3xl">
             Start Your Next Print
           </h1>
           <p className="mt-6 max-w-xl text-base leading-7 text-[#555555] sm:text-lg">
-            Tell us what you need, upload your model, and we will review the details before sending a clear quote.
+            Send your file or reference images with dimensions and quantity. We will review them and send a quote.
           </p>
           <a
             href={quoteFormUrl}
@@ -176,7 +176,7 @@ export function QuotePage() {
             className="focus-ring mt-8 inline-flex min-h-[54px] items-center justify-center gap-3 rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
           >
             <QuoteIcon name="upload" className="size-5" />
-            Upload Your Model
+            Request a Quote
           </a>
         </div>
         <div className="rounded-lg border border-[#E3E8F0] bg-[#F8FAFD] p-6 shadow-soft sm:p-9">
@@ -191,7 +191,9 @@ export function QuotePage() {
         </div>
       </section>
 
-      <section className="bg-[#F8FAFD] py-16 sm:py-24 lg:py-28">
+      <details className="container-page mb-6 rounded-lg border border-[#ECEFF5]">
+        <summary className="focus-ring cursor-pointer rounded-lg py-4 text-base font-extrabold">Materials, colors &amp; delivery</summary>
+        <section className="bg-[#F8FAFD] py-6 sm:py-8">
         <div className="container-page">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">
@@ -267,30 +269,14 @@ export function QuotePage() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </details>
 
-      <section className="container-page py-16 sm:py-24 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#2F6BFF]">How It Works</p>
-          <h2 className="mt-3 text-3xl font-extrabold leading-tight sm:text-4xl">Four Simple Steps</h2>
-        </div>
-        <div className="mx-auto mt-8 grid max-w-6xl gap-7 sm:mt-12 sm:grid-cols-2 sm:gap-8 lg:grid-cols-4">
-          {steps.map((step, index) => (
-            <div key={step.title} className="relative text-center">
-              {index < steps.length - 1 ? (
-                <div className="absolute left-[calc(50%+3rem)] top-10 hidden h-px w-[calc(100%-6rem)] border-t border-dashed border-[#ECEFF5] lg:block" />
-              ) : null}
-              <div className="relative z-10 mx-auto grid size-20 place-items-center rounded-full bg-[#EAF2FF] text-[#2F6BFF]">
-                <span className="absolute -top-2 right-1 grid size-6 place-items-center rounded-full bg-[#2F6BFF] text-xs font-extrabold text-white">
-                  {index + 1}
-                </span>
-                <QuoteIcon name={step.icon} className="size-8" />
-              </div>
-              <h3 className="mt-4 text-base font-extrabold">{step.title}</h3>
-              <p className="mx-auto mt-2 max-w-44 text-sm leading-6 text-[#555555]">{step.description}</p>
-            </div>
-          ))}
-        </div>
+      <section className="container-page pb-8 sm:pb-12">
+        <h2 className="text-lg font-extrabold">How it works</h2>
+        <ol className="mt-3 grid gap-2 text-sm text-[#555555] sm:grid-cols-4">
+          {steps.map((step, index) => <li key={step.title} className="flex items-center gap-2"><span className="grid size-6 shrink-0 place-items-center rounded-full bg-[#EAF2FF] text-xs font-bold text-[#2F6BFF]">{index + 1}</span>{step.title}</li>)}
+        </ol>
       </section>
 
       <SiteFooter />

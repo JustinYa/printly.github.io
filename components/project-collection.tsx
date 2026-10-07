@@ -286,8 +286,8 @@ function ServiceBoard({
       {isOpen ? (
         <div id={panelId} className="border-t border-[#E4EAF4] bg-[#F8FAFD] p-4 sm:p-7">
           <ul
-            aria-label={`${group.title} project placeholders`}
-            className="project-strip -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3 sm:gap-4"
+            aria-label={`${group.title} projects`} tabIndex={0}
+            className="project-strip focus-ring -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3 sm:gap-4"
           >
             {projects.map((project, index) => (
               <ProjectCard
@@ -309,17 +309,17 @@ export function ProjectCollection() {
     <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="projects" />
 
-      <section className="container-page flex min-h-[156px] flex-col justify-center text-left sm:min-h-[204px] lg:min-h-[228px] lg:text-center">
-        <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
+      <section className="container-page py-8 text-left sm:py-12">
+        <h1 className="text-2xl font-extrabold leading-tight sm:text-3xl">
           Selected <span className="text-[#2F6BFF]">Work</span>
         </h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-[#555555] sm:text-lg lg:mx-auto">
-          Open a service to explore selected prototyping, replication, and file production projects.
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-[#555555] sm:text-base">
+          Choose a category to see our work.
         </p>
       </section>
 
       <section className="container-page pb-12 pt-0 sm:pb-16 lg:pb-20">
-        <div className="space-y-5">
+        <div className="space-y-3">
           {serviceGroups.map((group) => (
             <ServiceBoard
               key={group.id}
@@ -330,24 +330,7 @@ export function ProjectCollection() {
         </div>
       </section>
 
-      <section className="container-page pb-20 sm:pb-24">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-[#F8FAFD] p-6 sm:gap-8 sm:p-10 md:flex-row md:items-center">
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
-              Start a Project
-            </p>
-            <h2 className="mt-3 max-w-2xl text-2xl font-extrabold leading-tight sm:text-3xl">
-              Have a project in mind?
-            </h2>
-          </div>
-          <Link
-            href="/quote/"
-            className="focus-ring inline-flex min-h-[52px] items-center justify-center rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
-          >
-            Request a Quote
-          </Link>
-        </div>
-      </section>
+      <div className="container-page pb-8"><Link href="/quote/" className="focus-ring inline-flex min-h-12 items-center rounded-lg bg-[#2F6BFF] px-6 text-sm font-extrabold text-white hover:bg-[#1F5AF6]">Request a Quote</Link></div>
 
       <SiteFooter />
     </main>

@@ -80,31 +80,20 @@ export function ContactPage() {
     <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="contact" />
 
-      <section className="container-page flex min-h-[156px] flex-col justify-center text-left sm:min-h-[204px] lg:min-h-[228px] lg:text-center">
-        <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
-          How Can We Help?
+      <section className="container-page py-8 text-left sm:py-12">
+        <h1 className="text-2xl font-extrabold leading-tight sm:text-3xl">
+          Contact Us
         </h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-[#555555] sm:text-lg lg:mx-auto">
-          Ask a question about your model, material, order, or the printing process.
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-[#555555] sm:text-base">
+          Call, email, or send us a question.
         </p>
       </section>
 
-      <section className="container-page pb-16 sm:pb-24 lg:pb-28">
+      <section className="container-page pb-8 sm:pb-12">
         <div className="overflow-hidden rounded-lg border border-[#ECEFF5] bg-white shadow-soft">
           <div className="grid lg:grid-cols-[0.34fr_0.66fr]">
             <aside className="bg-[#F8FAFD] p-6 sm:p-10 lg:p-12">
-              <h2 className="text-xl font-extrabold leading-tight sm:text-2xl">
-                Get
-                <br />
-                Support
-              </h2>
-              <div className="mt-7 h-1 w-10 rounded-full bg-[#2F6BFF]" />
-              <p className="mt-4 text-sm leading-7 text-[#555555]">
-                Questions about 3D printing?
-                <br />
-                We are here to help.
-              </p>
-              <div className="mt-8 border-t border-[#ECEFF5] pt-6 text-sm sm:mt-14 sm:pt-8 lg:mt-24">
+              <div className="text-sm">
                 <div>
                   <p className="font-extrabold">Instagram</p>
                   <a
@@ -130,7 +119,7 @@ export function ContactPage() {
                   <p className="mt-2 font-extrabold text-[#2F6BFF]">{contactLocation}</p>
                 </div>
                 <div className="mt-5 sm:mt-6">
-                <p className="font-extrabold">Need urgent help?</p>
+                <p className="font-extrabold">Email</p>
                 <a
                   className="focus-ring mt-2 inline-flex break-all rounded-lg font-extrabold text-[#2F6BFF] hover:text-[#1F5AF6]"
                   href={`mailto:${contactEmail}`}
@@ -149,14 +138,8 @@ export function ContactPage() {
 
             <div className="grid content-center gap-6 p-6 sm:gap-8 sm:p-10 lg:p-14">
               <div>
-                <h2 className="max-w-xl text-xl font-extrabold leading-tight sm:text-2xl">
-                  Tell us how we
-                  <br />
-                  can help<span className="text-[#2F6BFF]">.</span>
-                </h2>
-                <p className="mt-4 max-w-lg text-base leading-7 text-[#555555] sm:mt-6">
-                  Fill out the support form with as much detail as possible. You can also upload files or screenshots to help us understand your question better.
-                </p>
+                <h2 className="text-lg font-extrabold">Send a message</h2>
+                <p className="mt-2 text-sm leading-6 text-[#555555]">Include files or photos if they help explain your project.</p>
                 <a
                   href={supportFormUrl}
                   target="_blank"
@@ -174,21 +157,6 @@ export function ContactPage() {
                 </p>
               </div>
 
-              <div className="border-t border-[#ECEFF5] pt-8">
-                <div className="grid gap-6 sm:grid-cols-3">
-                  {[
-                    { title: "Upload Files", description: "STL, images, or screenshots", icon: "upload" as const },
-                    { title: "Quick Response", description: "Typically within 24 hours", icon: "bolt" as const },
-                    { title: "Expert Advice", description: "Clear answers from our team", icon: "mail" as const }
-                  ].map((item) => (
-                    <div key={item.title} className="border-[#ECEFF5] sm:border-r sm:pr-5 last:sm:border-r-0">
-                      <div className="text-[#2F6BFF]"><ContactIcon name={item.icon} /></div>
-                      <h3 className="mt-4 text-sm font-extrabold">{item.title}</h3>
-                      <p className="mt-2 text-sm leading-6 text-[#555555]">{item.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
