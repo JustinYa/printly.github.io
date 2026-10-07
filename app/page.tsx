@@ -229,7 +229,7 @@ export default function Home() {
           <div className="mt-3 grid grid-cols-2 gap-3 sm:gap-5">
             {[
               { title: "Racket Handle Mold", src: "/images/project-tennis-racket-handle-mold.webp", alt: "3D-printed tennis racket handle mold" },
-              { title: "Industrial Oven Part", src: "/images/project-industrial-oven-sensor-part.webp", alt: "Original oven part and printed replacement" }
+              { title: "Custom Keyboard", src: "/images/project-custom-keyboard.jpg", alt: "Custom keyboard prototype with rotary controls and programmable keys" }
             ].map((project) => (
               <Link key={project.title} href="/projects/" className="focus-ring overflow-hidden rounded-lg border border-[#ECEFF5] bg-white">
                 <div className="relative aspect-[4/3]"><Image src={assetPath(project.src)} alt={project.alt} fill sizes="(min-width: 1024px) 480px, 45vw" className="object-cover" /></div>
