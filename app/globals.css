@@ -4,14 +4,14 @@
 
 :root {
   color-scheme: light;
-  --color-primary: #2f6bff;
-  --color-primary-hover: #1f5af6;
-  --color-primary-light: #eaf2ff;
-  --color-title: #18181b;
-  --color-body: #555555;
-  --color-muted: #7a7a7a;
-  --color-section: #f8fafd;
-  --color-border: #eceff5;
+  --color-primary: #006dfd;
+  --color-primary-hover: #0057cb;
+  --color-primary-light: #edf3fc;
+  --color-title: #111318;
+  --color-body: #535b68;
+  --color-muted: #6a7380;
+  --color-section: #f3f5f7;
+  --color-border: #d8dde5;
 }
 
 html {
@@ -22,14 +22,21 @@ body {
   min-height: 100vh;
   background: #ffffff;
   color: var(--color-title);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 .project-strip {
   overscroll-behavior-inline: contain;
   scroll-padding-inline: 0.25rem;
-  scrollbar-color: #b8c9ed transparent;
+  scrollbar-color: #6a7380 transparent;
   scrollbar-width: thin;
-  touch-action: pan-x;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .project-strip::-webkit-scrollbar {
@@ -41,8 +48,8 @@ body {
 }
 
 .project-strip::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: #b8c9ed;
+  border-radius: 0;
+  background: #6a7380;
 }
 
 .project-strip::-webkit-scrollbar-button:horizontal:decrement,
@@ -68,18 +75,59 @@ body {
 
 @layer components {
   .container-page {
-    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-20;
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-16;
   }
 
   .focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F6BFF] focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-[#006DFD] focus-visible:ring-offset-2 focus-visible:ring-offset-white;
   }
 
   .form-label {
-    @apply text-xs font-extrabold text-[#18181B];
+    @apply text-sm font-semibold text-[#111318];
   }
 
   .form-field {
-    @apply focus-ring min-h-11 rounded-lg border border-[#ECEFF5] bg-white px-4 text-sm font-semibold text-[#18181B] placeholder:text-[#7A7A7A];
+    @apply focus-ring min-h-11 rounded-none border border-[#BFC7D3] bg-white px-4 text-sm font-normal text-[#111318] placeholder:text-[#6A7380];
+  }
+
+  .eyebrow {
+    @apply flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.1em] text-[#0057CB];
+  }
+
+  .eyebrow::before {
+    content: "";
+    @apply h-3 w-1 shrink-0 bg-[#006DFD];
+  }
+
+  .brand-panel {
+    @apply rounded-none border border-[#D8DDE5] border-t-4 border-t-[#006DFD] bg-white;
+  }
+
+  .brand-image {
+    @apply overflow-hidden rounded-none border border-[#D8DDE5];
+  }
+
+  .page-intro {
+    @apply py-10 text-left sm:py-14 lg:py-16;
+  }
+
+  .page-intro h1 {
+    @apply text-3xl font-bold leading-tight tracking-[-0.035em] sm:text-4xl lg:text-[2.75rem];
+  }
+
+  .studio-button {
+    @apply focus-ring inline-flex min-h-12 items-center justify-center gap-3 rounded-none border border-[#111318] bg-[#111318] px-6 py-3 text-sm font-bold text-white transition-colors hover:border-[#0057CB] hover:bg-[#0057CB];
+  }
+
+  .studio-button-on-dark {
+    @apply border-[#006DFD] bg-[#006DFD] hover:border-[#0057CB] hover:bg-[#0057CB];
+  }
+
+  .studio-button-secondary {
+    @apply focus-ring inline-flex min-h-12 items-center justify-center gap-3 rounded-none border border-[#111318] bg-transparent px-6 py-3 text-sm font-bold text-[#111318] transition-colors hover:bg-[#F3F5F7];
+  }
+
+  .text-link {
+    @apply focus-ring inline-flex items-center gap-2 text-sm font-semibold text-[#111318] underline decoration-[#111318] underline-offset-[6px] transition-colors hover:text-[#0057CB] hover:decoration-[#006DFD];
   }
 }

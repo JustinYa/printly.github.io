@@ -9,7 +9,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: [
-          "Inter",
+          "var(--font-montserrat)",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",

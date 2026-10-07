@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
@@ -11,8 +11,6 @@ const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 function assetPath(path: string) {
   return `${siteBasePath}${path}`;
 }
-
-type ServiceIconName = "scan" | "bolt" | "file";
 
 type ProjectCardData = {
   title: string;
@@ -26,8 +24,7 @@ type ServiceGroup = {
   id: string;
   title: string;
   description: string;
-  icon: ServiceIconName;
-  projects?: ProjectCardData[];
+  projects: ProjectCardData[];
 };
 
 const serviceGroups: ServiceGroup[] = [
@@ -35,7 +32,6 @@ const serviceGroups: ServiceGroup[] = [
     id: "fast-prototyping",
     title: "Product Development",
     description: "Custom models and functional prototypes for testing ideas, fit, and performance.",
-    icon: "bolt",
     projects: [
       {
         title: "Custom Keyboard",
@@ -85,7 +81,6 @@ const serviceGroups: ServiceGroup[] = [
     id: "one-to-one-replication",
     title: "Parts Replication",
     description: "Accurate replacements recreated from an original sample or precise measurements.",
-    icon: "scan",
     projects: [
       {
         title: "Van Wiper Clip",
@@ -111,7 +106,6 @@ const serviceGroups: ServiceGroup[] = [
     id: "print-from-files",
     title: "Print from Files",
     description: "Ready-to-print 3D files prepared and produced as finished physical parts.",
-    icon: "file",
     projects: [
       {
         title: "Painted Resin Bust",
@@ -135,108 +129,21 @@ const serviceGroups: ServiceGroup[] = [
   }
 ];
 
-const placeholderStyles = [
-  "from-[#DCE8FF] via-[#F8FAFF] to-[#C9DAFF]",
-  "from-[#E9E2FF] via-[#FAF8FF] to-[#D7CCFF]",
-  "from-[#DDF4F0] via-[#F7FCFB] to-[#C9E9E2]",
-  "from-[#FFE8D7] via-[#FFF9F4] to-[#FFD8BD]"
-];
-
-function ServiceIcon({ name }: { name: ServiceIconName }) {
-  const sharedProps = {
-    fill: "none",
-    stroke: "currentColor",
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    strokeWidth: 1.8
-  };
-
-  if (name === "scan") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" {...sharedProps}>
-        <path d="M8 3.5H4.5V7M16 3.5h3.5V7M8 20.5H4.5V17M16 20.5h3.5V17" />
-        <path d="m12 8 3.5 2v4L12 16l-3.5-2v-4zM12 8v4m3.5-2L12 12l-3.5-2" />
-      </svg>
-    );
-  }
-
-  if (name === "file") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" {...sharedProps}>
-        <path d="M6.5 3.5h7l4 4v13h-11z" />
-        <path d="M13.5 3.5v4h4M9 12h6M9 16h6" />
-      </svg>
-    );
-  }
-
+function ProjectCard({ project }: { project: ProjectCardData }) {
   return (
-    <svg viewBox="0 0 24 24" aria-hidden="true" className="h-6 w-6" {...sharedProps}>
-      <path d="m13.5 2.8-8 11h6l-1 7.4 8-11h-6z" />
-    </svg>
-  );
-}
-
-function PlaceholderVisual({ index, label }: { index: number; label: string }) {
-  return (
-    <div
-      role="img"
-      aria-label={label}
-      className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-br ${placeholderStyles[index % placeholderStyles.length]}`}
-    >
-      <div className="absolute -right-8 -top-10 h-36 w-36 rounded-full border border-white/80 bg-white/25" />
-      <div className="absolute -bottom-12 -left-8 h-32 w-32 rotate-12 rounded-[2rem] border border-white/80 bg-white/20" />
-      <div className="absolute inset-0 flex items-center justify-center text-[#2F6BFF]">
-        <svg
-          viewBox="0 0 64 64"
-          aria-hidden="true"
-          className="h-16 w-16 opacity-70"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-        >
-          <path d="m32 11 18 10v22L32 53 14 43V21z" />
-          <path d="m14 21 18 10 18-10M32 31v22M23 16l18 10" />
-        </svg>
+    <li className="w-[88%] max-w-[380px] shrink-0 snap-start sm:w-[350px] lg:w-[380px]">
+      <div className="brand-image relative aspect-[4/3] bg-[#F3F5F7]">
+        <Image
+          src={assetPath(project.image)}
+          alt={project.imageAlt}
+          fill
+          sizes="(max-width: 640px) 70vw, (max-width: 1024px) 350px, 380px"
+          className={project.imageFit === "contain" ? "object-contain" : "object-cover"}
+        />
       </div>
-    </div>
-  );
-}
-
-function ProjectCard({
-  projectNumber,
-  projectIndex,
-  project
-}: {
-  projectNumber: number;
-  projectIndex: number;
-  project?: ProjectCardData;
-}) {
-  const projectLabel = project?.title ?? `Project ${String(projectNumber).padStart(2, "0")}`;
-  const projectDescription =
-    project?.description ?? "Photos and project information coming soon.";
-
-  return (
-    <li className="w-[78vw] max-w-[310px] shrink-0 snap-start overflow-hidden rounded-xl border border-[#E4EAF4] bg-white shadow-[0_8px_24px_rgba(24,24,27,0.05)] sm:w-[310px]">
-      <div className="relative">
-        {project ? (
-          <div className="relative aspect-[4/3] overflow-hidden bg-[#111111]">
-            <Image
-              src={assetPath(project.image)}
-              alt={project.imageAlt}
-              fill
-              sizes="310px"
-              className={project.imageFit === "contain" ? "object-contain" : "object-cover"}
-            />
-          </div>
-        ) : (
-          <PlaceholderVisual index={projectIndex} label={`Placeholder image for ${projectLabel}`} />
-        )}
-      </div>
-      <div className="p-4 sm:p-5">
-        <h3 className="text-lg font-extrabold">{projectLabel}</h3>
-        <p className="mt-1 text-sm text-[#7A7A7A]">{projectDescription}</p>
+      <div className="pb-1 pt-4">
+        <h3 className="text-base font-bold leading-6 tracking-[-0.02em] sm:text-lg">{project.title}</h3>
+        <p className="mt-2 text-sm leading-6 text-[#535B68]">{project.description}</p>
       </div>
     </li>
   );
@@ -244,60 +151,72 @@ function ProjectCard({
 
 function ServiceBoard({
   group,
+  groupNumber,
   initiallyOpen
 }: {
   group: ServiceGroup;
+  groupNumber: number;
   initiallyOpen: boolean;
 }) {
   const [isOpen, setIsOpen] = useState(initiallyOpen);
   const panelId = `${group.id}-projects`;
-  const projects = group.projects ?? Array.from({ length: 4 });
+  const projects = group.projects;
+
+  useEffect(() => {
+    function openLinkedGroup() {
+      if (window.location.hash === `#${group.id}`) {
+        setIsOpen(true);
+      }
+    }
+
+    openLinkedGroup();
+    window.addEventListener("hashchange", openLinkedGroup);
+    return () => window.removeEventListener("hashchange", openLinkedGroup);
+  }, [group.id]);
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-[#E4EAF4] bg-white shadow-soft">
+    <article id={group.id} className={`scroll-mt-24 overflow-hidden border border-t-4 bg-white ${isOpen ? "border-[#111318] border-t-[#006DFD]" : "border-[#D8DDE5] border-t-[#111318]"}`}>
       <button
         type="button"
         aria-expanded={isOpen}
         aria-controls={panelId}
         onClick={() => setIsOpen((current) => !current)}
-        className="focus-ring group flex w-full items-center gap-3 p-4 text-left transition hover:bg-[#F8FAFD] sm:gap-6 sm:p-7"
+        className="focus-ring group flex w-full items-start gap-3 p-5 text-left transition-colors hover:bg-[#F3F5F7] focus-visible:ring-inset sm:gap-6 sm:p-7"
       >
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EAF2FF] text-[#2F6BFF] sm:h-14 sm:w-14">
-          <ServiceIcon name={group.icon} />
+        <span className="flex size-8 shrink-0 items-center justify-center bg-[#006DFD] font-mono text-xs font-bold tabular-nums text-white sm:size-10 sm:text-sm">
+          {String(groupNumber).padStart(2, "0")}
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-lg font-extrabold leading-tight sm:text-2xl">
+          <span className="block text-lg font-bold leading-tight tracking-[-0.025em] sm:text-2xl">
             {group.title}
           </span>
-          <span className="mt-1.5 hidden text-sm leading-6 text-[#555555] sm:block">
+          <span className="mt-2 block max-w-xl text-sm leading-6 text-[#535B68]">
             {group.description}
+          </span>
+          <span className="mt-3 block font-mono text-xs text-[#6A7380]">
+            {projects.length} projects
           </span>
         </span>
         <span
           aria-hidden="true"
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#DDE5F1] text-lg font-semibold text-[#2F6BFF] transition duration-300 group-hover:border-[#2F6BFF] sm:h-10 sm:w-10 sm:text-xl ${
-            isOpen ? "rotate-45 bg-[#EAF2FF]" : "bg-white"
-          }`}
+          className={`flex size-8 shrink-0 items-center justify-center border text-xl font-normal ${isOpen ? "border-[#111318] bg-[#111318] text-white" : "border-[#BFC7D3] text-[#111318]"}`}
         >
-          +
+          {isOpen ? "−" : "+"}
         </span>
       </button>
 
       {isOpen ? (
-        <div id={panelId} className="border-t border-[#E4EAF4] bg-[#F8FAFD] p-4 sm:p-7">
+        <div id={panelId} className="border-t border-[#D8DDE5] bg-[#F3F5F7] p-5 sm:p-7">
           <ul
-            aria-label={`${group.title} project placeholders`}
-            className="project-strip -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-3 sm:gap-4"
+            aria-label={`${group.title} projects`}
+            tabIndex={0}
+            className="project-strip focus-ring flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:gap-6"
           >
-            {projects.map((project, index) => (
-              <ProjectCard
-                key={project?.title ?? index}
-                projectNumber={index + 1}
-                projectIndex={index}
-                project={project}
-              />
+            {projects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
             ))}
           </ul>
+          <p className="mt-2 text-xs text-[#6A7380]">Scroll to browse this collection.</p>
         </div>
       ) : null}
     </article>
@@ -306,24 +225,26 @@ function ServiceBoard({
 
 export function ProjectCollection() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
+    <main className="min-h-screen overflow-x-hidden bg-[#F3F5F7] text-[#111318]">
       <SiteHeader activePage="projects" />
 
-      <section className="container-page flex min-h-[156px] flex-col justify-center text-left sm:min-h-[204px] lg:min-h-[228px] lg:text-center">
-        <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
-          Selected <span className="text-[#2F6BFF]">Work</span>
+      <section className="container-page page-intro">
+        <p className="eyebrow">Projects</p>
+        <h1 className="mt-4 text-3xl font-semibold leading-tight sm:text-4xl">
+          Selected <span className="text-[#006DFD]">work</span>
         </h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-[#555555] sm:text-lg lg:mx-auto">
-          Open a service to explore selected prototyping, replication, and file production projects.
+        <p className="mt-4 max-w-2xl text-base leading-7 text-[#535B68] sm:text-lg">
+          Prototypes, replacement parts, and finished prints from our studio.
         </p>
       </section>
 
       <section className="container-page pb-12 pt-0 sm:pb-16 lg:pb-20">
-        <div className="space-y-5">
-          {serviceGroups.map((group) => (
+        <div className="space-y-4">
+          {serviceGroups.map((group, index) => (
             <ServiceBoard
               key={group.id}
               group={group}
+              groupNumber={index + 1}
               initiallyOpen={group.id === "fast-prototyping"}
             />
           ))}
@@ -331,18 +252,18 @@ export function ProjectCollection() {
       </section>
 
       <section className="container-page pb-20 sm:pb-24">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-2xl bg-[#F8FAFD] p-6 sm:gap-8 sm:p-10 md:flex-row md:items-center">
+        <div className="flex flex-col items-start justify-between gap-6 border-t-2 border-[#111318] pt-8 sm:gap-8 sm:pt-10 md:flex-row md:items-center">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
-              Start a Project
-            </p>
-            <h2 className="mt-3 max-w-2xl text-2xl font-extrabold leading-tight sm:text-3xl">
-              Have a project in mind?
+            <h2 className="max-w-2xl text-2xl font-semibold leading-tight sm:text-3xl">
+              Let’s work on your next part.
             </h2>
+            <p className="mt-3 text-sm leading-6 text-[#535B68]">
+              Send a model, a drawing, or a photo of what you need.
+            </p>
           </div>
           <Link
             href="/quote/"
-            className="focus-ring inline-flex min-h-[52px] items-center justify-center rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
+            className="studio-button"
           >
             Request a Quote
           </Link>
