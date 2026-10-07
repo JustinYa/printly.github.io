@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import Script from "next/script";
 import "./globals.css";
 
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
-const montserrat = localFont({
-  src: "./fonts/montserrat-latin-variable.woff2",
-  variable: "--font-montserrat",
-  weight: "400 800",
-  style: "normal",
-  display: "swap",
-  fallback: ["Arial", "sans-serif"]
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://printlylab.com"),
@@ -47,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${montserrat.variable} font-sans antialiased`}>
+      <body className="font-sans antialiased">
         {children}
         <Script
           id="cloudflare-web-analytics"

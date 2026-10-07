@@ -19,36 +19,36 @@ export function ProjectDetail({ project }: { project: Project }) {
   ];
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white text-[#111318]">
+    <main className="min-h-screen overflow-x-hidden bg-white text-[#18181B]">
       <SiteHeader activePage="projects" />
 
       <section className="container-page grid gap-10 py-12 sm:py-16 lg:grid-cols-[0.4fr_0.6fr] lg:items-center lg:gap-16 lg:py-20">
         <div className="max-w-xl">
           <Link
             href="/projects/"
-            className="text-link mb-5 inline-flex items-center gap-2"
+            className="focus-ring mb-5 inline-flex items-center gap-2 rounded-full border border-[#DDE5F1] bg-white px-4 py-2 text-sm font-bold text-[#555555] shadow-[0_4px_14px_rgba(24,24,27,0.05)] transition hover:border-[#2F6BFF] hover:text-[#2F6BFF]"
           >
             <span aria-hidden="true" className="text-base leading-none">
               &larr;
             </span>
             Back to Projects
           </Link>
-          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#006DFD]">
+          <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
             Selected Work / {project.service}
           </p>
-          <h1 className="mt-5 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+          <h1 className="mt-5 text-3xl font-extrabold leading-tight sm:text-4xl">
             {project.title}
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-8 text-[#535B68]">
+          <p className="mt-6 max-w-lg text-lg leading-8 text-[#555555]">
             {project.summary}
           </p>
-          <p className="mt-8 border-l-2 border-[#006DFD] pl-4 text-sm font-semibold text-[#535B68]">
+          <p className="mt-8 border-l-2 border-[#2F6BFF] pl-4 text-sm font-bold text-[#555555]">
             {project.category}
           </p>
         </div>
 
         <div
-          className={`brand-image relative mx-auto w-full overflow-hidden bg-[#F6F8FB] lg:mr-0 ${
+          className={`relative mx-auto w-full overflow-hidden rounded-lg bg-[#F8FAFD] lg:mr-0 ${
             usesLandscapeMedia ? "aspect-[4/3] max-w-[40rem]" : "aspect-[3/4] max-w-[34rem]"
           }`}
         >
@@ -63,17 +63,17 @@ export function ProjectDetail({ project }: { project: Project }) {
         </div>
       </section>
 
-      <section className="border-y border-[#D8DDE5]">
+      <section className="border-y border-[#ECEFF5]">
         <div className="container-page grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           {project.specifications.map((specification) => (
             <div
               key={specification.label}
-              className="border-b border-r border-[#D8DDE5] py-6 pr-4 last:border-r-0 md:py-8 lg:border-b-0 lg:px-5 first:lg:pl-0 last:lg:pr-0"
+              className="border-b border-r border-[#ECEFF5] py-6 pr-4 last:border-r-0 md:py-8 lg:border-b-0 lg:px-5 first:lg:pl-0 last:lg:pr-0"
             >
-              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#6A7380]">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.13em] text-[#7A7A7A]">
                 {specification.label}
               </p>
-              <p className="mt-2 text-sm font-semibold leading-5 text-[#111318]">
+              <p className="mt-2 text-sm font-extrabold leading-5 text-[#18181B]">
                 {specification.value}
               </p>
             </div>
@@ -84,25 +84,25 @@ export function ProjectDetail({ project }: { project: Project }) {
       <section className="container-page py-20 sm:py-24 lg:py-28">
         <div className="grid gap-12 md:grid-cols-3 md:gap-8 lg:gap-12">
           {projectSections.map((section) => (
-            <article key={section.title} className="border-t border-[#D8DDE5] pt-6">
-              <p className="font-mono text-xs text-[#006DFD]">{section.number}</p>
-              <h2 className="mt-8 text-2xl font-bold tracking-tight">{section.title}</h2>
-              <p className="mt-4 leading-7 text-[#535B68]">{section.content}</p>
+            <article key={section.title} className="border-t border-[#DDE2EA] pt-6">
+              <p className="text-xs font-extrabold text-[#2F6BFF]">{section.number}</p>
+              <h2 className="mt-8 text-2xl font-extrabold">{section.title}</h2>
+              <p className="mt-4 leading-7 text-[#555555]">{section.content}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="border-y border-[#D8DDE5] bg-[#F6F8FB] py-20 sm:py-24 lg:py-28">
+      <section className="bg-[#F8FAFD] py-20 sm:py-24 lg:py-28">
         <div className="container-page">
           <div className="mb-10 flex items-end justify-between gap-6 sm:mb-12">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#006DFD]">
+              <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
                 Project Gallery
               </p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Closer Look</h2>
+              <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Closer Look</h2>
             </div>
-            <p className="hidden max-w-xs text-right text-sm leading-6 text-[#6A7380] sm:block">
+            <p className="hidden max-w-xs text-right text-sm leading-6 text-[#7A7A7A] sm:block">
               Additional project photography will be added here.
             </p>
           </div>
@@ -110,7 +110,7 @@ export function ProjectDetail({ project }: { project: Project }) {
             {project.gallery.map((image, index) => (
               <div
                 key={`${image.src}-${index}`}
-                className={`brand-image relative overflow-hidden bg-white ${
+                className={`relative overflow-hidden rounded-lg bg-white ${
                   usesLandscapeMedia ? "aspect-[4/3]" : "aspect-[3/4]"
                 }`}
               >
@@ -128,18 +128,18 @@ export function ProjectDetail({ project }: { project: Project }) {
       </section>
 
       <section className="container-page py-20 sm:py-24 lg:py-28">
-        <div className="flex flex-col items-start justify-between gap-8 border-t border-[#D8DDE5] pt-10 md:flex-row md:items-end">
+        <div className="flex flex-col items-start justify-between gap-8 border-t border-[#DDE2EA] pt-10 md:flex-row md:items-end">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#006DFD]">
+            <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[#2F6BFF]">
               Have a Similar Project?
             </p>
-            <h2 className="mt-4 max-w-2xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
+            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold leading-tight sm:text-4xl">
               Let&apos;s turn your next idea into a finished part.
             </h2>
           </div>
           <Link
             href="/quote/"
-            className="studio-button"
+            className="focus-ring inline-flex min-h-[52px] items-center justify-center rounded-xl bg-[#2F6BFF] px-7 text-sm font-extrabold text-white shadow-blue transition hover:-translate-y-0.5 hover:bg-[#1F5AF6]"
           >
             Start a Similar Project
           </Link>
